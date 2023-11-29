@@ -1,22 +1,21 @@
-package com.kunal;
+//package com.kunal;
 
 import java.util.Scanner;
 
 public class Practice {
     public static void main(String[] args) {
         //leap year
-//        System.out.println("Enter the year");
-//        Scanner scanner =new Scanner(System.in);
-//        int year =  scanner.nextInt();
-//
-//        if (year % 4 == 0 && year % 400 == 00 || year % 100 != 0 ){
-//            System.out.println("leap year");
-//        }
-//
-//        else
-//        {
-//            System.out.println("Not a leap year");
-//        }
+        System.out.println("Enter the year");
+        Scanner scanner = new Scanner(System.in);
+        int year = scanner.nextInt();
+
+        if (year % 4 == 0 && year % 400 == 00 || year % 100 != 0) {
+            System.out.println("leap year");
+        } else {
+            System.out.println("Not a leap year");
+        }
+    }
+}
 
         //HCF Calculations
 
@@ -81,4 +80,4 @@ public class Practice {
 //        System.out.println(Total);
 //    }
 
-}
+//}
