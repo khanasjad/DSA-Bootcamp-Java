@@ -1,0 +1,33 @@
+        //leap year
+        System.out.println("Enter the year");
+        Scanner scanner = new Scanner(System.in);
+        int year = scanner.nextInt();
+
+        if (year % 4 == 0 && year % 400 == 00 || year % 100 != 0) {
+            System.out.println("leap year");
+        } else {
+            System.out.println("Not a leap year");
+        }
+    }
+
+    -------
+
+            //HCF Calculations
+
+            Scanner scanner1  = new Scanner(System.in);
+
+
+            int value1 = scanner1.nextInt();
+            int value2 = scanner1.nextInt();
+            int temp = 0;
+
+
+            for (int i =1;i<value1|| i<value2;i++)
+            if (value1 % i == 0 && value2 % i == 0){
+
+                 temp = i;
+
+            }
+    //        System.out.println("HCF"+temp);
+
+            System.out.println("LCM"+value1*value2/temp);
