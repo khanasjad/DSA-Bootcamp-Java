@@ -1,12 +1,6 @@
-//public class Main {
-//    public static void main(String[] args) {
-//
-//
-//        System.out.println("Hello world!");
-//    }
+package Array;
 
-
-public class Main {
+public class Kadane {
     public static int maxSubArraySum(int[] nums) {
         // Initialize variables
         int maxEndingHere = nums[0];
