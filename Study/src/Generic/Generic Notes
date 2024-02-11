@@ -31,3 +31,223 @@
     //        System.out.println("HCF"+temp);
 
             System.out.println("LCM"+value1*value2/temp);
+
+
+        int [] arr =  {7,1,5,3,6,4};
+        int temp = 0;
+        int max = 0;
+        for (int i =0; i<arr.length;i++){
+
+            for (int j =i+1; j<arr.length;j++){
+                if (arr[i] < arr[j]){
+                    temp = arr[j] - arr[i];
+                  //.  System.out.println("temp"+temp);
+                }
+                if (max < temp){
+                    max = temp;
+                }
+            }
+        }
+      System.out.println("max "+max);
+
+
+
+      package Generic;
+
+      import java.util.ArrayList;
+      import java.util.List;
+
+      public class Solve {
+
+          // Java program to find Maximum Product Subarray
+
+          // Returns the product
+          // of max product subarray.
+          static int maxSubarrayProduct(int arr[], int n)
+          {
+               int max= arr[0];
+               int min=arr[0];
+               int total = Integer.MIN_VALUE;
+               for(int i =1;i<arr.length;i++){
+                   int temp = Math.max(Math.max(arr[i],Math.max(arr[i],arr[i] *max)),Math.max(arr[i],arr[i] *min));
+                   min = Math.min(Math.min(arr[i],Math.min(arr[i],arr[i] * max)),Math.min(arr[i],arr[i] *min));
+                    max = temp;
+                    total = Math.max(total,max);
+               }
+
+              return total;
+          }
+
+          // Driver code
+          public static void main(String args[])
+          {
+              int[] arr = { 1, -2, -3, 0, 7, -8, -2 };
+              int n = arr.length;
+              System.out.printf("Maximum Sub array product is %d",
+                      maxSubarrayProduct(arr, n));
+          }
+      }
+
+----
+ package Generic;
+
+ public class Solve {
+
+     public static void main(String args[])
+     {
+         // Let us search 3 in below array
+         int arr1[] = { 5, 6, 7, 8, 9, 14,17, 1, 2, 3 };
+         int n = arr1.length;
+         int key = 3;
+         System.out.println(
+                 "Index of the element is : "
+                         + pivotedBinarySearch(arr1, n, key));
+     }
+
+     private static int pivotedBinarySearch(int[] arr1, int n, int target) {
+         int left = 0;
+         int right = arr1.length-1;
+
+         while (left<right){
+             int midpoint =  left + (right-left)/2;
+             if (arr1[right]< arr1[midpoint]){
+                 left  = midpoint+1;
+             }else {
+                 right =  midpoint;
+             }
+         }
+
+         System.out.println(left);
+
+         int start = left;
+          left = 0;
+          right = arr1.length-1;
+         if (target >= arr1[start] && target<= arr1[right] ){
+             left = start;
+         }else{
+             right = start;
+
+         }
+
+         while (left<=right){
+             int midpoint =  left + (right-left)/2;
+             System.out.println(midpoint);
+             if (target == arr1[midpoint]){
+                 return midpoint;
+             }
+             else if (arr1[midpoint]< target){
+                 left  = midpoint+1;
+             }else {
+                 right =  midpoint-1;
+             }
+         }
+
+
+ return -1;
+
+     }
+ }
+
+---------
+        Solve solve = new Solve();
+        String[] words1= {"amazon","apple","facebook","google","leetcode"};
+        String[] words2= {"e","o"};
+
+        List<String> abc = solve.wordSubsets(words1,words2);
+        System.out.println(abc);
+    }
+
+        public List<String> wordSubsets(String[] words1, String[] words2) {
+            int[] maximum = new int[26];
+            List<String> abc= new ArrayList<String>();
+            for (int i =0; i<words2.length;i++){
+                int res[]= checkValue(words2[i]);
+                for(int j = 0;j<26;j++){
+                    maximum[j] = Math.max(maximum[j],res[j]);
+                }
+            }
+
+            for (int i= 0;i<words1.length;i++){
+                int res2[]= checkValue(words1[i]);
+                boolean valid= true;
+                for(int j = 0;j<26;j++){
+                    if (maximum[j] > res2[j]){
+                        valid= false;
+                        break;
+                    }
+                }
+                if (valid){
+                    abc.add(words1[i]);}
+            }
+
+            return abc;
+
+        }
+        public int[]checkValue (String word){
+            char values[] = word.toCharArray();
+            int[] restInt = new int[26];
+           // for (int i=0; i<values.length;i++){
+            for (char i: values){
+                int f = i-'a';
+                restInt[f]++;
+            }
+
+            return restInt;
+
+        }
+
+
+        =======
+
+
+
+        public static class Node{
+
+                int data;
+                Node next;
+                Node(int data){
+                    this.next = null;
+                    this.data = data;
+
+
+                }
+            }
+            public static void main(String[] args){
+
+                Node listNode = new Node(1);
+                listNode.next = new Node(2);
+                listNode.next.next = new Node(3);
+                listNode.next.next.next = new Node(4);
+                listNode.next.next.next.next = new Node(5);
+                listNode.next.next.next.next.next = new Node(6);
+
+               System.out.println( listNode.data);
+
+               reorder(listNode);
+            }
+
+          public static void reorder(Node head){
+           Node l1 = head;
+           Node fast = head;
+           Node slow = head;
+           Node previous = null;
+           if (fast != null &&  fast.next != null){
+               fast= fast.next.next;
+               slow=slow.next;
+               previous = slow;
+           }
+           previous.next = null;
+
+           Node l2 = reverseList(slow);
+
+           merge(l1,l2);
+
+          }
+
+            private static void merge(Node l1, Node l2) {
+            }
+
+            private static Node reverseList(Node slow) {
+            }
+
+
