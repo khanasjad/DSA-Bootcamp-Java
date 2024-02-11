@@ -1,6 +1,10 @@
 package Generic;
 
+import org.w3c.dom.Node;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 public class ListNode {
@@ -25,40 +29,38 @@ public class ListNode {
        root.right.left = new Node (6);
        root.right.right = new Node (9);
       // printLevelOrder(root);
-       // Node node = flipString(root);
+        Node node = flipString(root);
 
-       //printLevelOrder(node);
-    int[] preorder = new int[]{3,9,20,15,7};
-    int[] inorder  = new int[]{9,3,15,20,7};
-
-   Node node = buildTree(preorder,inorder);
        printLevelOrder(node);
 
+
+
    }
 
-    private static Node buildTree(int[] preorder, int[] inorder) {
-       return helper(0,0,inorder.length-1,preorder,inorder);
+    private static Node flipString(Node root) {
+
+        if ( root ==null)
+            return root;
+//        if(root.left !=null) {
+//            int temp = root.left.data;
+//            root.left.data = root.right.data;
+//            root.right.data = temp;
+//            root = root.left;
+//
+//        }
+//        Node flipped = flipString(root);
+//
+////        if(root.right != null){
+////            root = root.right;
+////            flipString(root);
+////        }
+        Node left=  flipString(root.left);
+        Node right=  flipString(root.right);
+
+        root.right=left;
+        root.left= right;
+        return root;
     }
-
-    private static Node helper(int preStart, int inStart, int inEnd,  int[] preorder, int[] inorder) {
-     if (preStart>preorder.length-1 || inStart>inEnd)
-         return null;
-       Node root = new Node(preorder[preStart]);
-       int inIndex = 0;
-       for(int i =inStart;i<=inEnd ;i++) {
-           if (root.data == preorder[i]) {
-               inIndex = i;
-           }
-
-   }
-           root.left=   helper(preStart+1,inStart,inIndex-1,preorder,inorder);
-           root.right=   helper(preStart+inIndex-inStart+1,inIndex+1,inEnd,preorder,inorder);
-
-
-
-       return root;
-    }
-
 
     public static void printLevelOrder(Node root)
     {
