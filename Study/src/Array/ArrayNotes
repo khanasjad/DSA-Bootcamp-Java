@@ -1,0 +1,261 @@
+Arrays in Depth: Beginner-Friendly and FAANG-Focused
+Arrays are one of the most fundamental and widely used data structures. They form the backbone of many advanced data structures and algorithms. FAANG interviews frequently feature array-related problems because of their versatility and efficiency.
+Let’s dive deep into arrays, break down their concepts, cover operations, and solve common FAANG-style problems with solutions in Java.
+
+1. What is an Array?
+An array is a collection of elements stored at contiguous memory locations. Arrays allow random access using indices, making them efficient for many operations.
+
+Key Characteristics:
+1.	Fixed Size:
+o	Arrays in Java have a fixed size, determined at the time of creation.
+2.	Indexing:
+o	Access elements in O(1)O(1)O(1) time using indices.
+3.	Homogeneous:
+o	Arrays can store elements of a single type.
+
+Array Declaration and Initialization in Java
+java
+CopyEdit
+// Declare and initialize an array
+int[] nums = new int[5]; // Array of size 5 (default values are 0)
+int[] values = {1, 2, 3, 4, 5}; // Array with predefined values
+
+// Access and modify elements
+System.out.println(nums[0]); // Access first element (Output: 0)
+nums[0] = 10;               // Modify the first element
+
+2. Key Operations in Arrays
+Basic Operations
+Operation	Description	Time Complexity
+Access	Retrieve element by index	O(1)O(1)O(1)
+Search	Search for an element (linear search)	O(n)O(n)O(n)
+Insert	Add an element at a specific index (shifting required)	O(n)O(n)O(n)
+Delete	Remove an element at a specific index (shifting required)	O(n)O(n)O(n)
+
+Example: Linear Search in Array
+java
+CopyEdit
+public class LinearSearch {
+    public static int search(int[] arr, int target) {
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == target) {
+                return i; // Return the index of the target
+            }
+        }
+        return -1; // Target not found
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {1, 3, 5, 7, 9};
+        int target = 5;
+        System.out.println(search(arr, target)); // Output: 2
+    }
+}
+
+3. Advanced Array Operations
+3.1 Two-Pointer Technique
+•	Use two pointers to solve problems efficiently.
+•	Common for problems involving sorted arrays, partitions, or palindromes.
+
+Example: Two-Sum in Sorted Array
+Find two numbers in a sorted array that add up to a target sum.
+java
+CopyEdit
+public class TwoSumSorted {
+    public static int[] twoSum(int[] arr, int target) {
+        int left = 0, right = arr.length - 1;
+
+        while (left < right) {
+            int sum = arr[left] + arr[right];
+            if (sum == target) {
+                return new int[]{left, right};
+            } else if (sum < target) {
+                left++; // Move left pointer forward
+            } else {
+                right--; // Move right pointer backward
+            }
+        }
+
+        return new int[]{-1, -1}; // No solution
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {1, 2, 3, 4, 6};
+        int target = 6;
+        int[] result = twoSum(arr, target);
+        System.out.println(result[0] + ", " + result[1]); // Output: 1, 3
+    }
+}
+
+3.2 Prefix Sum
+•	Precompute cumulative sums to solve range sum problems efficiently.
+
+Example: Range Sum Query
+Calculate the sum of elements in a subarray efficiently.
+java
+CopyEdit
+public class PrefixSum {
+    public static int rangeSum(int[] arr, int start, int end) {
+        int[] prefix = new int[arr.length + 1];
+        for (int i = 0; i < arr.length; i++) {
+            prefix[i + 1] = prefix[i] + arr[i];
+        }
+
+        return prefix[end + 1] - prefix[start]; // Sum of range [start, end]
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {1, 2, 3, 4, 5};
+        System.out.println(rangeSum(arr, 1, 3)); // Output: 9 (2 + 3 + 4)
+    }
+}
+
+3.3 Sliding Window Technique
+•	Maintain a "window" of elements and slide it across the array.
+•	Useful for fixed-size subarrays or optimizing variable-size subarrays.
+
+Example: Maximum Sum of Subarray of Size kkk
+java
+CopyEdit
+public class SlidingWindow {
+    public static int maxSubarraySum(int[] arr, int k) {
+        int maxSum = 0, windowSum = 0;
+
+        for (int i = 0; i < arr.length; i++) {
+            windowSum += arr[i]; // Add the current element
+
+            if (i >= k - 1) { // Window size reached
+                maxSum = Math.max(maxSum, windowSum);
+                windowSum -= arr[i - (k - 1)]; // Remove the first element of the window
+            }
+        }
+
+        return maxSum;
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {2, 1, 5, 1, 3, 2};
+        int k = 3;
+        System.out.println(maxSubarraySum(arr, k)); // Output: 9
+    }
+}
+
+4. FAANG-Style Array Problems
+Problem 1: Kadane’s Algorithm (Maximum Subarray Sum)
+Problem: Find the largest sum of a contiguous subarray.
+Approach:
+1.	Use a variable currentSum to track the sum of the current subarray.
+2.	Use a variable maxSum to store the maximum sum encountered.
+
+Code:
+java
+CopyEdit
+public class KadanesAlgorithm {
+    public static int maxSubarraySum(int[] arr) {
+        int maxSum = arr[0], currentSum = arr[0];
+
+        for (int i = 1; i < arr.length; i++) {
+            currentSum = Math.max(arr[i], currentSum + arr[i]);
+            maxSum = Math.max(maxSum, currentSum);
+        }
+
+        return maxSum;
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {-2, 1, -3, 4, -1, 2, 1, -5, 4};
+        System.out.println(maxSubarraySum(arr)); // Output: 6 (subarray: [4, -1, 2, 1])
+    }
+}
+
+Problem 2: Merge Intervals
+Problem: Given a collection of intervals, merge all overlapping intervals.
+
+Code:
+java
+CopyEdit
+import java.util.*;
+
+public class MergeIntervals {
+    public static int[][] merge(int[][] intervals) {
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+        List<int[]> result = new ArrayList<>();
+
+        int[] currentInterval = intervals[0];
+        result.add(currentInterval);
+
+        for (int[] interval : intervals) {
+            int currentEnd = currentInterval[1];
+            int nextStart = interval[0];
+            int nextEnd = interval[1];
+
+            if (nextStart <= currentEnd) {
+                currentInterval[1] = Math.max(currentEnd, nextEnd); // Merge
+            } else {
+                currentInterval = interval; // Start new interval
+                result.add(currentInterval);
+            }
+        }
+
+        return result.toArray(new int[result.size()][]);
+    }
+
+    public static void main(String[] args) {
+        int[][] intervals = {{1, 3}, {2, 6}, {8, 10}, {15, 18}};
+        int[][] merged = merge(intervals);
+
+        for (int[] interval : merged) {
+            System.out.println(Arrays.toString(interval)); // Output: [1, 6], [8, 10], [15, 18]
+        }
+    }
+}
+
+Problem 3: Product of Array Except Self
+Problem: Return an array where each element is the product of all other elements without using division.
+
+Code:
+java
+CopyEdit
+public class ProductExceptSelf {
+    public static int[] productExceptSelf(int[] nums) {
+        int n = nums.length;
+        int[] left = new int[n];
+        int[] right = new int[n];
+        int[] result = new int[n];
+
+        left[0] = 1;
+        for (int i = 1; i < n; i++) {
+            left[i] = left[i - 1] * nums[i - 1];
+        }
+
+        right[n - 1] = 1;
+        for (int i = n - 2; i >= 0; i--) {
+            right[i] = right[i + 1] * nums[i + 1];
+        }
+
+        for (int i = 0; i < n; i++) {
+            result[i] = left[i] * right[i];
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {1, 2, 3, 4};
+        int[] result = productExceptSelf(nums);
+
+        for (int num : result) {
+            System.out.print(num + " "); // Output: 24, 12, 8, 6
+        }
+    }
+}
+
+Suggested Problems for Practice:
+1.	LeetCode:
+o	Two Sum
+o	Best Time to Buy and Sell Stock
+o	Product of Array Except Self
+o	Merge Intervals
+o	Maximum Subarray
+Would you like to explore a specific array problem or concept in more depth?
+
