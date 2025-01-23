@@ -1,0 +1,185 @@
+HashMap / HashTable in Java: A Detailed Explanation for FAANG Interviews
+
+What is a HashMap / HashTable?
+•	HashMap (or HashTable) is a key-value pair data structure that provides efficient constant-time (O(1)) operations for insertion, deletion, and lookup in most cases.
+•	It uses hashing to map keys to their corresponding values.
+Analogy:
+Think of a HashMap like a phonebook:
+•	The name is the key, and the phone number is the value.
+•	When you search for a name, the phonebook uses its index to quickly retrieve the corresponding phone number.
+
+HashMap vs HashTable
+Feature	HashMap	HashTable
+Thread Safety	Not thread-safe (requires manual sync).	Thread-safe (synchronized).
+Null Keys/Values	Allows one null key and multiple null values.	Does not allow null keys or values.
+Performance	Faster due to no synchronization.	Slower due to synchronization.
+
+How Does Hashing Work in HashMap?
+1.	Key-Hashing:
+o	Every key is passed through a hash function to produce a hash code (integer).
+o	The hash code determines the bucket (location in memory) where the value is stored.
+Example:
+java
+Copy code
+Key: "apple" -> Hash Code: 124 -> Bucket Index: 4
+2.	Collision Handling:
+o	Collision occurs when two keys generate the same hash code.
+o	HashMap uses a combination of linked lists and binary trees to handle collisions efficiently (Java 8+).
+	If there are many collisions in one bucket, a tree structure (instead of a linked list) is used to improve lookup performance from O(n) to O(log n).
+
+Key Operations in HashMap
+1. Insertion
+•	Compute the hash code for the key.
+•	Place the key-value pair in the bucket corresponding to the hash code.
+•	Handle collisions if necessary.
+Code:
+java
+Copy code
+HashMap<String, Integer> map = new HashMap<>();
+map.put("apple", 1);
+map.put("banana", 2);
+System.out.println(map); // {apple=1, banana=2}
+2. Lookup
+•	Compute the hash code for the key.
+•	Search the bucket for the key and retrieve the value.
+Code:
+java
+Copy code
+System.out.println(map.get("apple")); // Output: 1
+System.out.println(map.get("orange")); // Output: null (key doesn't exist)
+3. Deletion
+•	Compute the hash code for the key.
+•	Remove the key-value pair from the bucket.
+Code:
+java
+Copy code
+map.remove("banana");
+System.out.println(map); // {apple=1}
+
+HashMap Methods
+Here are some commonly used methods in Java’s HashMap class:
+Method	Description	Example
+put(key, value)	Adds or updates the key-value pair.	map.put("key", value);
+get(key)	Retrieves the value associated with the key.	map.get("key");
+remove(key)	Removes the key-value pair.	map.remove("key");
+containsKey(key)	Checks if a key exists in the map.	map.containsKey("key");
+containsValue(value)	Checks if a value exists in the map.	map.containsValue("value");
+keySet()	Returns a Set of all keys in the map.	Set<String> keys = map.keySet();
+values()	Returns a Collection of all values in the map.	Collection<Integer> values = map.values();
+entrySet()	Returns a Set of key-value pairs (Map.Entry).	Set<Map.Entry<K, V>> entries = map.entrySet();
+size()	Returns the number of key-value pairs in the map.	map.size();
+clear()	Removes all key-value pairs from the map.	map.clear();
+
+Example Problems Using HashMap
+1. Two Sum (LeetCode 1)
+Problem: Given an array of integers, find two numbers that add up to a target value.
+Approach:
+•	Use a HashMap to store the difference between the target and each element as you iterate through the array.
+Code:
+java
+Copy code
+import java.util.*;
+
+public class TwoSum {
+    public int[] twoSum(int[] nums, int target) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            int complement = target - nums[i];
+            if (map.containsKey(complement)) {
+                return new int[]{map.get(complement), i};
+            }
+            map.put(nums[i], i);
+        }
+        throw new IllegalArgumentException("No solution found");
+    }
+
+    public static void main(String[] args) {
+        TwoSum obj = new TwoSum();
+        int[] nums = {2, 7, 11, 15};
+        int target = 9;
+        System.out.println(Arrays.toString(obj.twoSum(nums, target))); // [0, 1]
+    }
+}
+
+2. Group Anagrams (LeetCode 49)
+Problem: Group strings that are anagrams of each other.
+Approach:
+•	Use a HashMap where the key is the sorted string, and the value is a list of all its anagrams.
+Code:
+java
+Copy code
+import java.util.*;
+
+public class GroupAnagrams {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        Map<String, List<String>> map = new HashMap<>();
+        for (String str : strs) {
+            char[] chars = str.toCharArray();
+            Arrays.sort(chars);
+            String key = new String(chars);
+            map.putIfAbsent(key, new ArrayList<>());
+            map.get(key).add(str);
+        }
+        return new ArrayList<>(map.values());
+    }
+
+    public static void main(String[] args) {
+        GroupAnagrams obj = new GroupAnagrams();
+        String[] strs = {"eat", "tea", "tan", "ate", "nat", "bat"};
+        System.out.println(obj.groupAnagrams(strs));
+    }
+}
+
+3. Find the First Non-Repeating Character (LeetCode 387)
+Problem: Find the first character in a string that doesn’t repeat.
+Approach:
+•	Use a HashMap to count the frequency of each character.
+Code:
+java
+Copy code
+import java.util.*;
+
+public class FirstNonRepeatingCharacter {
+    public int firstUniqChar(String s) {
+        Map<Character, Integer> map = new HashMap<>();
+        for (char c : s.toCharArray()) {
+            map.put(c, map.getOrDefault(c, 0) + 1);
+        }
+        for (int i = 0; i < s.length(); i++) {
+            if (map.get(s.charAt(i)) == 1) return i;
+        }
+        return -1;
+    }
+    public static void main(String[] args) {
+        FirstNonRepeatingCharacter obj = new FirstNonRepeatingCharacter();
+        System.out.println(obj.firstUniqChar("leetcode")); // Output: 0
+    }
+}
+
+Advantages of HashMap
+1.	Fast Lookup: O(1) for most operations.
+2.	Flexible Keys: Can use custom objects as keys (requires overriding equals and hashCode).
+3.	Dynamic Resizing: Automatically resizes itself to maintain efficiency.
+
+Common Issues in HashMap
+1.	Hash Collisions:
+o	Occur when two keys produce the same hash code.
+o	Handled by chaining or open addressing.
+2.	Poor Hash Function:
+o	A bad hash function can cause clustering and degrade performance to O(n).
+3.	Thread Safety:
+o	Use ConcurrentHashMap if you need thread-safe behavior.
+
+FAANG Tips for HashMap
+1.	Understand Hashing:
+o	Be clear on how hashCode() and equals() work.
+o	Know how Java handles collisions (linked list and tree structures).
+2.	Common Use Cases:
+o	Frequency counting.
+o	Caching intermediate results (e.g., dynamic programming).
+3.	Practice:
+o	Solve LeetCode problems like Two Sum, Group Anagrams, and Subarray Sum Equals K.
+4.	Avoid Overuse:
+o	For small datasets, simple arrays may be more efficient.
+With these concepts and examples, you're ready to confidently tackle HashMap
+

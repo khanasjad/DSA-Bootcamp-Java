@@ -1,0 +1,236 @@
+1.	Stack
+
+What is a Stack?
+•	A stack is a linear data structure that follows the LIFO (Last In, First Out) principle.
+•	Think of a stack as a pile of plates:
+o	You add plates to the top (push).
+o	You remove plates from the top (pop).
+o	The last plate added is the first one removed.
+
+Key Operations
+1.	Push: Add an item to the top of the stack.
+2.	Pop: Remove the item from the top of the stack.
+3.	Peek/Top: View the item at the top of the stack without removing it.
+4.	isEmpty: Check if the stack is empty.
+
+Example in Java
+Java provides a Stack class, but you can also implement a stack using an array or linked list.
+Using Java's Stack Class:
+java
+CopyEdit
+import java.util.Stack;
+
+public class StackExample {
+    public static void main(String[] args) {
+        Stack<Integer> stack = new Stack<>();
+
+        // Push elements onto the stack
+        stack.push(10);
+        stack.push(20);
+        stack.push(30);
+
+        // Peek the top element
+        System.out.println("Top element: " + stack.peek()); // Output: 30
+
+        // Pop elements from the stack
+        System.out.println("Popped: " + stack.pop()); // Output: 30
+        System.out.println("Popped: " + stack.pop()); // Output: 20
+
+        // Check if stack is empty
+        System.out.println("Is stack empty? " + stack.isEmpty()); // Output: false
+    }
+}
+
+Applications of Stacks
+1.	Expression Evaluation:
+o	Convert and evaluate infix, postfix, or prefix expressions.
+2.	Backtracking:
+o	Use stacks to implement undo functionality (like in text editors).
+3.	DFS (Depth-First Search):
+o	Use stacks to explore paths in graphs or trees.
+4.	Bracket Matching:
+o	Validate parentheses in mathematical expressions.
+
+FAANG-Style Stack Problem: Valid Parentheses
+Problem: Check if a string of parentheses is valid.
+Examples:
+•	Input: "()[]{}"
+•	Output: true
+•	Input: "(]"
+•	Output: false
+Code:
+java
+CopyEdit
+import java.util.Stack;
+
+public class ValidParentheses {
+    public static boolean isValid(String s) {
+        Stack<Character> stack = new Stack<>();
+
+        for (char c : s.toCharArray()) {
+            // Push opening brackets onto the stack
+            if (c == '(' || c == '{' || c == '[') {
+                stack.push(c);
+            }
+            // Check matching closing brackets
+            else {
+                if (stack.isEmpty()) return false;
+                char top = stack.pop();
+                if ((c == ')' && top != '(') ||
+                    (c == '}' && top != '{') ||
+                    (c == ']' && top != '[')) {
+                    return false;
+                }
+            }
+        }
+
+        return stack.isEmpty(); // Ensure no unmatched brackets
+    }
+
+    public static void main(String[] args) {
+        System.out.println(isValid("()[]{}")); // true
+        System.out.println(isValid("(]"));     // false
+    }
+}
+
+
+2. Queue
+What is a Queue?
+•	A queue is a linear data structure that follows the FIFO (First In, First Out) principle.
+•	Think of a queue as a line at the grocery store:
+o	The first person in line is served first.
+o	New people join at the back of the line.
+
+Key Operations
+1.	Enqueue: Add an item to the back of the queue.
+2.	Dequeue: Remove the item from the front of the queue.
+3.	Peek/Front: View the item at the front of the queue without removing it.
+4.	isEmpty: Check if the queue is empty.
+
+Example in Java
+Java provides Queue as an interface, with implementations like LinkedList and PriorityQueue.
+Using LinkedList as a Queue:
+java
+CopyEdit
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class QueueExample {
+    public static void main(String[] args) {
+        Queue<Integer> queue = new LinkedList<>();
+
+        // Enqueue elements
+        queue.offer(10);
+        queue.offer(20);
+        queue.offer(30);
+
+        // Peek the front element
+        System.out.println("Front element: " + queue.peek()); // Output: 10
+
+        // Dequeue elements
+        System.out.println("Dequeued: " + queue.poll()); // Output: 10
+        System.out.println("Dequeued: " + queue.poll()); // Output: 20
+
+        // Check if queue is empty
+        System.out.println("Is queue empty? " + queue.isEmpty()); // Output: false
+    }
+}
+
+Applications of Queues
+1.	Scheduling:
+o	CPU task scheduling, printer queues, etc.
+2.	BFS (Breadth-First Search):
+o	Traverse graphs or trees level by level.
+3.	Order Processing:
+o	Handle requests or processes in order of arrival.
+
+FAANG-Style Queue Problem: Rotten Oranges
+Problem: Given a grid of oranges, where:
+•	0: Empty cell.
+•	1: Fresh orange.
+•	2: Rotten orange.
+Every minute, rotten oranges rot adjacent fresh oranges. Find the minimum time to rot all oranges or return -1 if impossible.
+Code:
+java
+CopyEdit
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class RottenOranges {
+    public static int orangesRotting(int[][] grid) {
+        int rows = grid.length;
+        int cols = grid[0].length;
+        Queue<int[]> queue = new LinkedList<>();
+        int fresh = 0;
+
+        // Initialize the queue with all rotten oranges and count fresh oranges
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (grid[i][j] == 2) {
+                    queue.offer(new int[]{i, j});
+                } else if (grid[i][j] == 1) {
+                    fresh++;
+                }
+            }
+        }
+
+        if (fresh == 0) return 0; // No fresh oranges to rot
+        int minutes = -1; // Start at -1 because the first round doesn't take a minute
+
+        // Directions for adjacent cells
+        int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+
+        // BFS to rot adjacent oranges
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            minutes++;
+
+            for (int i = 0; i < size; i++) {
+                int[] cell = queue.poll();
+                int x = cell[0];
+                int y = cell[1];
+
+                for (int[] dir : directions) {
+                    int nx = x + dir[0];
+                    int ny = y + dir[1];
+
+                    // If the cell is within bounds and contains a fresh orange
+                    if (nx >= 0 && nx < rows && ny >= 0 && ny < cols && grid[nx][ny] == 1) {
+                        grid[nx][ny] = 2; // Mark it as rotten
+                        queue.offer(new int[]{nx, ny});
+                        fresh--;
+                    }
+                }
+            }
+        }
+
+        return fresh == 0 ? minutes : -1; // Return -1 if there are still fresh oranges
+    }
+
+    public static void main(String[] args) {
+        int[][] grid = {
+            {2, 1, 1},
+            {1, 1, 0},
+            {0, 1, 1}
+        };
+
+        System.out.println(orangesRotting(grid)); // Output: 4
+    }
+}
+
+Summary
+Feature	Stack	Queue
+Principle	Last In, First Out (LIFO)	First In, First Out (FIFO)
+Key Operations	Push, Pop, Peek	Enqueue, Dequeue, Peek
+Examples	Undo feature, DFS, Bracket Matching	Task Scheduling, BFS, Order Processing
+
+Suggested Problems for Practice
+1.	Stacks:
+o	Daily Temperatures
+o	Next Greater Element
+o	Largest Rectangle in Histogram
+2.	Queues:
+o	Sliding Window Maximum
+o	Binary Tree Level Order Traversal
+o	Rotten Oranges
+

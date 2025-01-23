@@ -1,0 +1,279 @@
+
+Trees in Depth: Beginner-Friendly and FAANG-Focused
+Let’s explore Trees in a structured and beginner-friendly manner, much like the previous topics. We'll cover what trees are, how they work, their operations, and common FAANG-style interview problems with code examples in Java.
+
+1. What is a Tree?
+A tree is a hierarchical data structure consisting of nodes. It starts with a root node, and each node can have child nodes, forming a branching structure.
+Key Terminologies
+1.	Node: A single element in the tree.
+2.	Root: The topmost node of the tree.
+3.	Parent: A node that has child nodes.
+4.	Child: A node connected to a parent node.
+5.	Leaf: A node with no children.
+6.	Height: The length of the longest path from the root to a leaf.
+7.	Depth: The number of edges from the root to a specific node.
+
+Tree Representation
+markdown
+CopyEdit
+        1
+       / \
+      2   3
+     / \
+    4   5
+•	Root: 1
+•	Leaves: 3, 4, 5
+•	Height: 2
+
+2. Types of Trees
+1.	Binary Tree: Each node has at most two children.
+2.	Binary Search Tree (BST):
+o	Left child < Parent < Right child.
+o	Efficient for searching, inserting, and deleting.
+3.	Balanced Tree: A tree where the height difference between subtrees is minimal (e.g., AVL Tree).
+4.	N-ary Tree: A tree where nodes can have up to N children.
+5.	Heap:
+o	Min-Heap: Parent <= Children.
+o	Max-Heap: Parent >= Children.
+6.	Trie: A tree used for string operations like prefix searches.
+
+3. Tree Representation in Code
+A tree can be represented using a Node class and recursive structure. Here's an example for a binary tree:
+Java Code:
+java
+CopyEdit
+class TreeNode {
+    int value;
+    TreeNode left;
+    TreeNode right;
+
+    // Constructor
+    TreeNode(int value) {
+        this.value = value;
+        left = null;
+        right = null;
+    }
+}
+
+public class TreeExample {
+    public static void main(String[] args) {
+        // Creating nodes
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        root.left.left = new TreeNode(4);
+        root.left.right = new TreeNode(5);
+
+        // Print root value
+        System.out.println("Root value: " + root.value); // Output: 1
+    }
+}
+
+4. Tree Traversal
+Types of Traversals
+1.	Depth-First Search (DFS):
+o	Inorder (Left → Root → Right): Produces sorted output in BST.
+o	Preorder (Root → Left → Right): Used for copying a tree.
+o	Postorder (Left → Right → Root): Used for deleting a tree.
+2.	Breadth-First Search (BFS):
+o	Level-order traversal (visit nodes level by level).
+
+Traversal Implementations
+DFS: Inorder Traversal (Recursive)
+java
+CopyEdit
+public class InorderTraversal {
+    public static void inorder(TreeNode root) {
+        if (root == null) return;
+
+        inorder(root.left);  // Visit left subtree
+        System.out.print(root.value + " ");  // Visit root
+        inorder(root.right); // Visit right subtree
+    }
+
+    public static void main(String[] args) {
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        root.left.left = new TreeNode(4);
+        root.left.right = new TreeNode(5);
+
+        inorder(root); // Output: 4 2 5 1 3
+    }
+}
+BFS: Level-Order Traversal (Using Queue)
+java
+CopyEdit
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class LevelOrderTraversal {
+    public static void levelOrder(TreeNode root) {
+        if (root == null) return;
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            TreeNode current = queue.poll();
+            System.out.print(current.value + " ");
+
+            if (current.left != null) queue.add(current.left);
+            if (current.right != null) queue.add(current.right);
+        }
+    }
+
+    public static void main(String[] args) {
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        root.left.left = new TreeNode(4);
+        root.left.right = new TreeNode(5);
+
+        levelOrder(root); // Output: 1 2 3 4 5
+    }
+}
+
+5. FAANG-Style Tree Problems
+Problem 1: Maximum Depth of Binary Tree
+Problem: Find the maximum depth (height) of a binary tree.
+Code:
+java
+CopyEdit
+public class MaxDepth {
+    public static int maxDepth(TreeNode root) {
+        if (root == null) return 0;
+
+        int leftDepth = maxDepth(root.left);
+        int rightDepth = maxDepth(root.right);
+
+        return Math.max(leftDepth, rightDepth) + 1;
+    }
+
+    public static void main(String[] args) {
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        root.left.left = new TreeNode(4);
+        root.left.right = new TreeNode(5);
+
+        System.out.println(maxDepth(root)); // Output: 3
+    }
+}
+
+Problem 2: Validate Binary Search Tree
+Problem: Check if a binary tree is a valid BST.
+Code:
+java
+CopyEdit
+public class ValidateBST {
+    public static boolean isValidBST(TreeNode root, Integer min, Integer max) {
+        if (root == null) return true;
+
+        if ((min != null && root.value <= min) || (max != null && root.value >= max)) {
+            return false;
+        }
+
+        return isValidBST(root.left, min, root.value) && isValidBST(root.right, root.value, max);
+    }
+
+    public static boolean isValidBST(TreeNode root) {
+        return isValidBST(root, null, null);
+    }
+
+    public static void main(String[] args) {
+        TreeNode root = new TreeNode(2);
+        root.left = new TreeNode(1);
+        root.right = new TreeNode(3);
+
+        System.out.println(isValidBST(root)); // Output: true
+    }
+}
+
+Problem 3: Lowest Common Ancestor (LCA)
+Problem: Find the lowest common ancestor of two nodes in a binary tree.
+Code:
+java
+CopyEdit
+public class LowestCommonAncestor {
+    public static TreeNode lca(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null || root == p || root == q) return root;
+
+        TreeNode left = lca(root.left, p, q);
+        TreeNode right = lca(root.right, p, q);
+
+        return (left != null && right != null) ? root : (left != null ? left : right);
+    }
+
+    public static void main(String[] args) {
+        TreeNode root = new TreeNode(3);
+        root.left = new TreeNode(5);
+        root.right = new TreeNode(1);
+        root.left.left = new TreeNode(6);
+        root.left.right = new TreeNode(2);
+        root.right.left = new TreeNode(0);
+        root.right.right = new TreeNode(8);
+
+        TreeNode p = root.left; // Node 5
+        TreeNode q = root.right; // Node 1
+
+        System.out.println(lca(root, p, q).value); // Output: 3
+    }
+}
+
+Problem 4: Serialize and Deserialize Binary Tree
+Problem: Convert a tree into a string and reconstruct it back.
+Code:
+java
+CopyEdit
+import java.util.*;
+
+public class SerializeDeserializeTree {
+    public static String serialize(TreeNode root) {
+        if (root == null) return "null,";
+        return root.value + "," + serialize(root.left) + serialize(root.right);
+    }
+
+    public static TreeNode deserialize(String data) {
+        Queue<String> nodes = new LinkedList<>(Arrays.asList(data.split(",")));
+        return buildTree(nodes);
+    }
+
+    private static TreeNode buildTree(Queue<String> nodes) {
+        String value = nodes.poll();
+        if (value.equals("null")) return null;
+
+        TreeNode node = new TreeNode(Integer.parseInt(value));
+        node.left = buildTree(nodes);
+        node.right = buildTree(nodes);
+
+        return node;
+    }
+
+    public static void main(String[] args) {
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        root.right.left = new TreeNode(4);
+        root.right.right = new TreeNode(5);
+
+        String serialized = serialize(root);
+        System.out.println("Serialized: " + serialized); // Serialized: 1,2,null,null,3,4,null,null,5,null,null,
+
+        TreeNode deserialized = deserialize(serialized);
+        System.out.println("Deserialized root: " + deserialized.value); // Deserialized root: 1
+    }
+}
+
+Summary of Trees
+Feature	Description
+Traversal	DFS (Inorder, Preorder, Postorder), BFS
+Common Operations	Max Depth, Validate BST, LCA
+Applications	Heaps, Tries, Prefix Trees, Search
+
+Suggested Problems for Practice
+1.	LeetCode:
+o	Binary Tree Inorder Traversal
+o	Lowest Common Ancestor
+o	Serialize and Deserialize Binary Tree
+

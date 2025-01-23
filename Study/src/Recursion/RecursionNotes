@@ -1,0 +1,413 @@
+What is Recursion?
+Recursion is a technique where a method calls itself to solve smaller instances of a problem. It involves breaking a problem into smaller subproblems of the same type until it reaches a base case, at which point the recursion stops.
+Think of recursion as:
+•	A divide-and-conquer strategy.
+•	Solving a large problem by repeatedly reducing it.
+
+Key Components of Recursion
+1.	Base Case: The condition that stops the recursion to prevent infinite loops.
+2.	Recursive Case: The part where the function calls itself to work on smaller problems.
+
+Example 1: Recursion with Factorial
+The factorial of a number nnn is defined as:
+n!=n×(n−1)×(n−2)…×1n! = n \times (n-1) \times (n-2) \ldots \times 1n!=n×(n−1)×(n−2)…×1
+For example:
+5!=5×4×3×2×1=1205! = 5 \times 4 \times 3 \times 2 \times 1 = 1205!=5×4×3×2×1=120
+Code:
+Here’s how you would calculate factorial using recursion:
+java
+CopyEdit
+public class RecursionExample {
+    // Recursive method to calculate factorial
+    public static int factorial(int n) {
+        if (n == 0 || n == 1) { // Base case
+            return 1;
+        }
+        return n * factorial(n - 1); // Recursive case
+    }
+
+    public static void main(String[] args) {
+        int number = 5;
+        System.out.println("Factorial of " + number + " is: " + factorial(number));
+    }
+}
+Output:
+csharp
+CopyEdit
+Factorial of 5 is: 120
+Explanation:
+•	factorial(5)=5×factorial(4)factorial(5) = 5 \times factorial(4)factorial(5)=5×factorial(4)
+•	factorial(4)=4×factorial(3)factorial(4) = 4 \times factorial(3)factorial(4)=4×factorial(3)
+•	factorial(3)=3×factorial(2)factorial(3) = 3 \times factorial(2)factorial(3)=3×factorial(2)
+•	factorial(2)=2×factorial(1)factorial(2) = 2 \times factorial(1)factorial(2)=2×factorial(1)
+•	factorial(1)=1factorial(1) = 1factorial(1)=1 (Base case)
+
+Example 2: Recursion with Fibonacci Sequence
+The Fibonacci sequence is defined as:
+F(n)=F(n−1)+F(n−2)F(n) = F(n-1) + F(n-2)F(n)=F(n−1)+F(n−2)
+Where:
+F(0)=0,F(1)=1F(0) = 0, \quad F(1) = 1F(0)=0,F(1)=1
+Code:
+Here’s how to compute Fibonacci numbers recursively:
+java
+CopyEdit
+public class FibonacciRecursion {
+    // Recursive method for Fibonacci
+    public static int fibonacci(int n) {
+        if (n == 0) { // Base case 1
+            return 0;
+        }
+        if (n == 1) { // Base case 2
+            return 1;
+        }
+        return fibonacci(n - 1) + fibonacci(n - 2); // Recursive case
+    }
+
+    public static void main(String[] args) {
+        int number = 7;
+        System.out.println("Fibonacci number at position " + number + " is: " + fibonacci(number));
+    }
+}
+Output:
+arduino
+CopyEdit
+Fibonacci number at position 7 is: 13
+Explanation:
+•	F(7)=F(6)+F(5)F(7) = F(6) + F(5)F(7)=F(6)+F(5)
+•	F(6)=F(5)+F(4)F(6) = F(5) + F(4)F(6)=F(5)+F(4), and so on...
+
+Visualizing Recursion
+Imagine recursion as a stack:
+1.	Each function call is added to the stack.
+2.	When the base case is hit, the stack unwinds, resolving each call.
+For factorial(5)factorial(5)factorial(5), the call stack looks like this:
+scss
+CopyEdit
+factorial(5) -> factorial(4) -> factorial(3) -> factorial(2) -> factorial(1)
+Then it resolves back:
+scss
+CopyEdit
+factorial(1) -> factorial(2) -> factorial(3) -> factorial(4) -> factorial(5)
+
+Common Mistakes in Recursion
+1.	Missing Base Case: Leads to infinite recursion and StackOverflowError.
+2.	Inefficient Computation: Recursive calls like Fibonacci may repeat work unnecessarily.
+o	Solution: Use memoization or dynamic programming.
+
+Example 3: Optimized Fibonacci (Memoization)
+java
+CopyEdit
+import java.util.HashMap;
+
+public class FibonacciMemoization {
+    private static HashMap<Integer, Integer> memo = new HashMap<>();
+
+    public static int fibonacci(int n) {
+        if (n == 0) return 0; // Base case 1
+        if (n == 1) return 1; // Base case 2
+        if (memo.containsKey(n)) return memo.get(n); // Check memo
+
+        int result = fibonacci(n - 1) + fibonacci(n - 2); // Recursive case
+        memo.put(n, result); // Store result in memo
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int number = 50;
+        System.out.println("Fibonacci number at position " + number + " is: " + fibonacci(number));
+    }
+}
+
+Key Takeaways:
+•	Recursion is powerful for problems that can be broken into smaller, similar subproblems.
+•	Always define a base case to avoid infinite loops.
+•	Use memoization for efficiency in cases like Fibonacci.
+
+
+Key Concepts in Recursion for FAANG
+1.	Understand the Problem
+o	Carefully analyze the problem and determine if recursion is appropriate.
+o	Look for problems with repetitive subproblems (divide-and-conquer, dynamic programming candidates).
+2.	Base Case
+o	The base case defines when the recursion stops. Without it, your solution will result in a StackOverflowError.
+o	For example, when processing a tree, the base case is often when you reach a null node.
+3.	Recursive Case
+o	Break the problem into smaller instances.
+o	Ensure each recursive call gets closer to the base case.
+4.	Think in Terms of Call Stack
+o	Every recursive call is added to the call stack.
+o	The recursion unwinds when the base case is reached.
+
+Classic Recursion Problems for FAANG Interviews
+1. Generate All Subsets (Power Set)
+Problem: Given a set of distinct integers, return all possible subsets.
+Approach:
+•	At each step, decide whether to include the current element or not.
+Code:
+java
+CopyEdit
+import java.util.*;
+
+public class Subsets {
+    public static List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        generateSubsets(0, nums, new ArrayList<>(), result);
+        return result;
+    }
+
+    private static void generateSubsets(int index, int[] nums, List<Integer> current, List<List<Integer>> result) {
+        if (index == nums.length) { // Base case
+            result.add(new ArrayList<>(current));
+            return;
+        }
+
+        // Include the current element
+        current.add(nums[index]);
+        generateSubsets(index + 1, nums, current, result);
+
+        // Exclude the current element
+        current.remove(current.size() - 1);
+        generateSubsets(index + 1, nums, current, result);
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {1, 2, 3};
+        System.out.println(subsets(nums));
+    }
+}
+Output:
+css
+CopyEdit
+[[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]]
+
+2. Permutations of a String/Array
+Problem: Given a string or array, return all permutations.
+Approach:
+•	Use recursion to swap elements and generate permutations.
+Code:
+java
+CopyEdit
+import java.util.*;
+
+public class Permutations {
+    public static List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        generatePermutations(nums, 0, result);
+        return result;
+    }
+
+    private static void generatePermutations(int[] nums, int start, List<List<Integer>> result) {
+        if (start == nums.length) { // Base case
+            List<Integer> current = new ArrayList<>();
+            for (int num : nums) current.add(num);
+            result.add(current);
+            return;
+        }
+
+        for (int i = start; i < nums.length; i++) {
+            swap(nums, start, i); // Swap to create a new permutation
+            generatePermutations(nums, start + 1, result);
+            swap(nums, start, i); // Backtrack
+        }
+    }
+
+    private static void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {1, 2, 3};
+        System.out.println(permute(nums));
+    }
+}
+Output:
+css
+CopyEdit
+[[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 2, 1], [3, 1, 2]]
+
+3. Solve N-Queens Problem
+Problem: Place NNN queens on an N×NN \times NN×N chessboard such that no two queens attack each other.
+Approach:
+•	Use recursion with backtracking to explore all valid configurations.
+Code:
+java
+CopyEdit
+import java.util.*;
+
+public class NQueens {
+    public static List<List<String>> solveNQueens(int n) {
+        List<List<String>> result = new ArrayList<>();
+        char[][] board = new char[n][n];
+        for (char[] row : board) Arrays.fill(row, '.');
+        placeQueens(0, board, result);
+        return result;
+    }
+
+    private static void placeQueens(int row, char[][] board, List<List<String>> result) {
+        if (row == board.length) { // Base case
+            result.add(construct(board));
+            return;
+        }
+
+        for (int col = 0; col < board.length; col++) {
+            if (isSafe(row, col, board)) {
+                board[row][col] = 'Q'; // Place queen
+                placeQueens(row + 1, board, result); // Recurse
+                board[row][col] = '.'; // Backtrack
+            }
+        }
+    }
+
+    private static boolean isSafe(int row, int col, char[][] board) {
+        for (int i = 0; i < row; i++) if (board[i][col] == 'Q') return false; // Check column
+        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) // Check upper left diagonal
+            if (board[i][j] == 'Q') return false;
+        for (int i = row - 1, j = col + 1; i >= 0 && j < board.length; i--, j++) // Check upper right diagonal
+            if (board[i][j] == 'Q') return false;
+        return true;
+    }
+
+    private static List<String> construct(char[][] board) {
+        List<String> path = new ArrayList<>();
+        for (char[] row : board) path.add(new String(row));
+        return path;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(solveNQueens(4));
+    }
+}
+Output:
+lua
+CopyEdit
+[[.Q.., ...Q, Q..., ..Q.], [..Q., Q..., ...Q, .Q..]]
+
+Pro Tips for FAANG Interviews
+1.	Understand Base and Recursive Cases:
+o	Ensure your solution stops at the base case.
+o	Clearly define what your recursive case solves.
+2.	Analyze Time and Space Complexity:
+o	Recursion often involves exponential time complexity. Optimize where possible (e.g., memoization).
+3.	Practice Backtracking:
+o	Problems like N-Queens, Sudoku Solver, and Maze Paths are common.
+4.	Think Iteratively:
+o	Be prepared to convert recursive solutions to iterative ones for optimization.
+5.	Common Patterns:
+o	Divide-and-conquer (e.g., Merge Sort, Quick Sort).
+o	Dynamic programming problems (e.g., Fibonacci, Knapsack).
+o	Tree traversal (e.g., Preorder, Inorder, Postorder).
+
+Suggested Problems to Practice:
+•	Leetcode:
+o	Subset Problems
+o	Permutations
+o	N-Queens
+o	Generate Parentheses
+o	Word Search
+Let’s dive deeper into Backtracking, one of the most commonly tested recursion patterns in FAANG interviews. We’ll use the Generate Parentheses problem as a case study, which is a great example of how recursion and backtracking work.
+
+Problem: Generate Parentheses
+Description: Given nnn, generate all combinations of nnn pairs of valid parentheses.
+Examples:
+•	Input: n=3n = 3n=3
+•	Output:
+css
+CopyEdit
+["((()))", "(()())", "(())()", "()(())", "()()()"]
+
+Approach: Recursion with Backtracking
+1.	Recursive Idea:
+o	At each step, you can add either an open ( or a close ) parenthesis, but you must ensure that:
+	The number of open parentheses used is not greater than nnn.
+	The number of close parentheses used does not exceed the number of open parentheses.
+2.	Base Case:
+o	When the length of the current string is 2×n2 \times n2×n (because each pair contributes 2 characters), add the string to the result.
+3.	Recursive Case:
+o	If adding an open parenthesis is valid, recursively add it.
+o	If adding a close parenthesis is valid, recursively add it.
+
+Code:
+java
+CopyEdit
+import java.util.*;
+
+public class GenerateParentheses {
+    public static List<String> generateParentheses(int n) {
+        List<String> result = new ArrayList<>();
+        backtrack(result, "", 0, 0, n);
+        return result;
+    }
+
+    private static void backtrack(List<String> result, String current, int open, int close, int max) {
+        // Base case: If the current string length equals 2 * n, add to result
+        if (current.length() == max * 2) {
+            result.add(current);
+            return;
+        }
+
+        // Recursive case: Add '(' if the number of open parentheses is less than max
+        if (open < max) {
+            backtrack(result, current + "(", open + 1, close, max);
+        }
+
+        // Recursive case: Add ')' if the number of close parentheses is less than open
+        if (close < open) {
+            backtrack(result, current + ")", open, close + 1, max);
+        }
+    }
+
+    public static void main(String[] args) {
+        int n = 3;
+        System.out.println(generateParentheses(n));
+    }
+}
+
+Dry Run: n=2n = 2n=2
+•	Starting with current = "", open = 0, close = 0, max = 2.
+Recursive Tree:
+scss
+CopyEdit
+                           ""
+                         /    \
+                       (        )
+                    /             \
+                 ((              ()
+               /   \            /   \
+           ((()   (()()       ()(  ())()
+Valid combinations:
+•	(()())
+•	()(())
+•	()()()
+
+Complexity Analysis
+1.	Time Complexity:
+o	The number of valid parentheses combinations is given by the nnn-th Catalan number: Cn=(2n)!(n+1)!⋅n!C_n = \frac{(2n)!}{(n+1)! \cdot n!}Cn=(n+1)!⋅n!(2n)!
+o	Therefore, the time complexity is O(4n/n)O(4^n / \sqrt{n})O(4n/n), which is the upper bound for generating parentheses.
+2.	Space Complexity:
+o	The recursion depth is proportional to 2×n2 \times n2×n, so the space complexity is O(2n)O(2n)O(2n).
+
+General Backtracking Template
+For FAANG problems, backtracking often follows a pattern:
+1.	Decide when to stop (base case).
+2.	Decide what options you have at each step (recursive case).
+3.	Apply constraints (valid states).
+4.	Undo changes (backtrack).
+
+More Problems to Practice
+1.	Sudoku Solver:
+o	Place numbers on a Sudoku grid while respecting rules.
+o	Sudoku Solver - LeetCode
+2.	Word Search:
+o	Find if a word exists in a 2D grid.
+o	Word Search - LeetCode
+3.	Combination Sum:
+o	Find combinations of numbers that add up to a target.
+o	Combination Sum - LeetCode
+4.	Palindrome Partitioning:
+o	Partition a string into palindromes.
+o	Palindrome Partitioning - LeetCode
+
+
+

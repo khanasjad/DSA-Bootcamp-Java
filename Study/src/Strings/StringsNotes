@@ -1,0 +1,234 @@
+1. What is a String in Java?
+•	A string is a sequence of characters. In Java, it is an object of the String class, which provides many methods for string manipulation.
+•	Strings in Java are immutable, meaning once a string is created, its value cannot be changed.
+
+Example:
+java
+CopyEdit
+public class StringExample {
+    public static void main(String[] args) {
+        String s = "Hello";
+        System.out.println(s); // Output: Hello
+    }
+}
+
+2. String Basics
+How to Create Strings
+1.	Using String Literals:
+o	Strings created this way are stored in the String Pool (part of the heap memory).
+java
+CopyEdit
+String s1 = "Hello";
+String s2 = "Hello"; // Points to the same object in the String Pool
+2.	Using the new Keyword:
+o	Strings created this way are stored in the heap memory.
+java
+CopyEdit
+String s3 = new String("Hello"); // Creates a new object
+
+Common Methods in the String Class
+Method	Description	Example
+length()	Returns the length of the string	"hello".length() → 5
+charAt(index)	Returns the character at the specified index	"hello".charAt(1) → 'e'
+substring(start, end)	Returns a substring from start to end (exclusive)	"hello".substring(1, 4) → "ell"
+toUpperCase()	Converts all characters to uppercase	"hello".toUpperCase() → "HELLO"
+toLowerCase()	Converts all characters to lowercase	"HELLO".toLowerCase() → "hello"
+equals(str)	Compares two strings for equality (case-sensitive)	"hello".equals("hello") → true
+equalsIgnoreCase(str)	Compares strings ignoring case differences	"hello".equalsIgnoreCase("HELLO") → true
+indexOf(char)	Returns the index of the first occurrence of a character	"hello".indexOf('e') → 1
+replace(old, new)	Replaces all occurrences of a character with another	"hello".replace('l', 'p') → "heppo"
+split(regex)	Splits the string into an array based on a delimiter	"a,b,c".split(",") → ["a", "b", "c"]
+trim()	Removes leading and trailing whitespaces	" hello ".trim() → "hello"
+
+Example Code for String Methods:
+java
+CopyEdit
+public class StringMethods {
+    public static void main(String[] args) {
+        String s = "hello world";
+
+        // Length
+        System.out.println("Length: " + s.length()); // Output: 11
+
+        // Character at index
+        System.out.println("Character at index 1: " + s.charAt(1)); // Output: e
+
+        // Substring
+        System.out.println("Substring (0, 5): " + s.substring(0, 5)); // Output: hello
+
+        // Replace
+        System.out.println("Replace 'o' with 'a': " + s.replace('o', 'a')); // Output: halla warld
+
+        // Uppercase
+        System.out.println("Uppercase: " + s.toUpperCase()); // Output: HELLO WORLD
+    }
+}
+
+3. Important String Concepts
+Immutability of Strings
+•	When you modify a string, Java creates a new string object rather than modifying the original.
+java
+CopyEdit
+public class StringImmutability {
+    public static void main(String[] args) {
+        String s = "hello";
+        s = s + " world"; // Creates a new string "hello world"
+        System.out.println(s); // Output: hello world
+    }
+}
+
+Mutable Strings: StringBuilder and StringBuffer
+•	To improve performance when strings are modified frequently, use StringBuilder (not thread-safe) or StringBuffer (thread-safe).
+Example: Using StringBuilder
+java
+CopyEdit
+public class StringBuilderExample {
+    public static void main(String[] args) {
+        StringBuilder sb = new StringBuilder("hello");
+
+        sb.append(" world");
+        System.out.println(sb); // Output: hello world
+
+        sb.insert(5, ",");
+        System.out.println(sb); // Output: hello, world
+    }
+}
+
+4. FAANG-Style String Problems
+1. Reverse a String
+Problem: Reverse the given string.
+Code:
+java
+CopyEdit
+public class ReverseString {
+    public static String reverse(String s) {
+        StringBuilder reversed = new StringBuilder(s);
+        return reversed.reverse().toString();
+    }
+
+    public static void main(String[] args) {
+        String s = "hello";
+        System.out.println(reverse(s)); // Output: olleh
+    }
+}
+
+2. Check if a String is a Palindrome
+Problem: Check if the given string reads the same forward and backward.
+Code:
+java
+CopyEdit
+public class PalindromeCheck {
+    public static boolean isPalindrome(String s) {
+        int left = 0, right = s.length() - 1;
+
+        while (left < right) {
+            if (s.charAt(left) != s.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+
+        return true;
+    }
+
+    public static void main(String[] args) {
+        String s = "racecar";
+        System.out.println(isPalindrome(s)); // Output: true
+    }
+}
+
+3. Longest Substring Without Repeating Characters
+Problem: Find the length of the longest substring without repeating characters.
+Code:
+java
+CopyEdit
+import java.util.HashSet;
+
+public class LongestUniqueSubstring {
+    public static int lengthOfLongestSubstring(String s) {
+        HashSet<Character> set = new HashSet<>();
+        int left = 0, maxLength = 0;
+
+        for (int right = 0; right < s.length(); right++) {
+            while (set.contains(s.charAt(right))) {
+                set.remove(s.charAt(left));
+                left++;
+            }
+            set.add(s.charAt(right));
+            maxLength = Math.max(maxLength, right - left + 1);
+        }
+
+        return maxLength;
+    }
+
+    public static void main(String[] args) {
+        String s = "abcabcbb";
+        System.out.println(lengthOfLongestSubstring(s)); // Output: 3
+    }
+}
+
+4. Anagram Check
+Problem: Check if two strings are anagrams (contain the same characters in any order).
+Code:
+java
+CopyEdit
+import java.util.Arrays;
+
+public class AnagramCheck {
+    public static boolean isAnagram(String s1, String s2) {
+        if (s1.length() != s2.length()) return false;
+
+        char[] arr1 = s1.toCharArray();
+        char[] arr2 = s2.toCharArray();
+
+        Arrays.sort(arr1);
+        Arrays.sort(arr2);
+
+        return Arrays.equals(arr1, arr2);
+    }
+
+    public static void main(String[] args) {
+        String s1 = "listen";
+        String s2 = "silent";
+
+        System.out.println(isAnagram(s1, s2)); // Output: true
+    }
+}
+
+5. Find All Substrings
+Problem: Generate all substrings of a string.
+Code:
+java
+CopyEdit
+public class AllSubstrings {
+    public static void generateSubstrings(String s) {
+        for (int i = 0; i < s.length(); i++) {
+            for (int j = i + 1; j <= s.length(); j++) {
+                System.out.println(s.substring(i, j));
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        String s = "abc";
+        generateSubstrings(s);
+        // Output: a, ab, abc, b, bc, c
+    }
+}
+
+Summary of Concepts
+Feature	Description
+Immutability	Strings are immutable; modifications create new objects.
+StringBuilder	Use for mutable strings when performance matters.
+Common Methods	length(), charAt(), substring(), replace(), etc.
+Key Applications	Palindrome check, reversing, anagrams, finding substrings, etc.
+
+Suggested Problems for Practice
+1.	LeetCode:
+o	Longest Palindromic Substring
+o	Group Anagrams
+o	Minimum Window Substring
+2.	HackerRank:
+o	String Manipulation
+
