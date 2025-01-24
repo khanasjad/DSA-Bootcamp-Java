@@ -1,0 +1,210 @@
+Dynamic Programming (DP) in Depth: Beginner-Friendly and FAANG-Focused
+Dynamic Programming (DP) is a method for solving complex problems by breaking them down into simpler subproblems. It is one of the most important techniques for FAANG interviews.
+Let’s dive deep into DP, covering its concepts, examples, and common interview problems.
+
+1. What is Dynamic Programming?
+Dynamic Programming is used to solve problems that have:
+1.	Optimal Substructure:
+o	A problem can be broken into smaller subproblems, and the solution to the main problem can be constructed from the solutions to these subproblems.
+2.	Overlapping Subproblems:
+o	The same subproblem is solved multiple times. DP avoids this by storing results (memoization or tabulation).
+
+Comparison with Divide and Conquer
+Aspect	Divide and Conquer	Dynamic Programming
+Subproblems	Solved independently	Results reused (overlapping subproblems)
+Techniques	Recursion, Binary Search, Merge Sort	Memoization, Tabulation
+
+2. Approaches to Solve DP Problems
+1.	Memoization (Top-Down):
+o	Solve the problem recursively and store results of subproblems in a data structure (like an array or hash map) to avoid redundant computation.
+o	Analogy: Remember the solution once it’s computed.
+2.	Tabulation (Bottom-Up):
+o	Build a table iteratively from the base case(s) to the final solution.
+o	Analogy: Start from the ground and build upward.
+
+Example: Fibonacci Sequence
+Problem: Compute the nnn-th Fibonacci number.
+
+Memoization (Top-Down)
+java
+CopyEdit
+import java.util.HashMap;
+
+public class FibonacciMemoization {
+    private static HashMap<Integer, Integer> memo = new HashMap<>();
+
+    public static int fibonacci(int n) {
+        if (n <= 1) return n; // Base case
+
+        if (memo.containsKey(n)) return memo.get(n); // Check memo
+
+        int result = fibonacci(n - 1) + fibonacci(n - 2); // Recursive calls
+        memo.put(n, result); // Store in memo
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(fibonacci(10)); // Output: 55
+    }
+}
+
+Tabulation (Bottom-Up)
+java
+CopyEdit
+public class FibonacciTabulation {
+    public static int fibonacci(int n) {
+        if (n <= 1) return n;
+
+        int[] dp = new int[n + 1]; // Create DP table
+        dp[0] = 0;
+        dp[1] = 1;
+
+        for (int i = 2; i <= n; i++) { // Build table
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+
+        return dp[n];
+    }
+
+    public static void main(String[] args) {
+        System.out.println(fibonacci(10)); // Output: 55
+    }
+}
+
+3. Steps to Solve DP Problems
+1.	Identify the problem type:
+o	Common types: Knapsack, Longest subsequence, Grid traversal, etc.
+2.	Define the state:
+o	Decide what the state dp[i]dp[i]dp[i] represents.
+o	Example: dp[i]dp[i]dp[i] might represent the solution to the subproblem up to index iii.
+3.	Formulate the recurrence relation:
+o	Find how the solution of the current state depends on previous states.
+4.	Base case(s):
+o	Define trivial cases where the result is known without recursion.
+5.	Implement using memoization or tabulation.
+
+4. FAANG-Style DP Problems
+Problem 1: Climbing Stairs
+Problem: You are climbing a staircase. Each time, you can climb 1 or 2 steps. How many distinct ways can you reach the top?
+
+Approach:
+1.	dp[i]dp[i]dp[i]: Number of ways to reach step iii.
+2.	Recurrence relation: dp[i]=dp[i−1]+dp[i−2]dp[i] = dp[i-1] + dp[i-2]dp[i]=dp[i−1]+dp[i−2] (From step i−1i-1i−1 or i−2i-2i−2).
+3.	Base cases: dp[0]=1,dp[1]=1dp[0] = 1, \quad dp[1] = 1dp[0]=1,dp[1]=1
+
+Code (Tabulation):
+java
+CopyEdit
+public class ClimbingStairs {
+    public static int climbStairs(int n) {
+        if (n <= 1) return 1;
+
+        int[] dp = new int[n + 1];
+        dp[0] = 1;
+        dp[1] = 1;
+
+        for (int i = 2; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+
+        return dp[n];
+    }
+
+    public static void main(String[] args) {
+        System.out.println(climbStairs(5)); // Output: 8
+    }
+}
+
+Problem 2: Longest Increasing Subsequence (LIS)
+Problem: Given an array of integers, find the length of the longest increasing subsequence.
+
+Approach:
+1.	dp[i]dp[i]dp[i]: Length of LIS ending at index iii.
+2.	Recurrence relation: dp[i]=max⁡(dp[i],dp[j]+1)for all j<i and nums[j]<nums[i]dp[i] = \max(dp[i], dp[j] + 1) \quad \text{for all } j < i \text{ and } nums[j] < nums[i]dp[i]=max(dp[i],dp[j]+1)for all j<i and nums[j]<nums[i]
+3.	Base case: dp[i]=1∀idp[i] = 1 \quad \forall idp[i]=1∀i
+
+Code:
+java
+CopyEdit
+public class LongestIncreasingSubsequence {
+    public static int lengthOfLIS(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int[n];
+        Arrays.fill(dp, 1); // Every element is a subsequence of length 1
+        int maxLength = 1;
+
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[j] < nums[i]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+            maxLength = Math.max(maxLength, dp[i]);
+        }
+
+        return maxLength;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {10, 9, 2, 5, 3, 7, 101, 18};
+        System.out.println(lengthOfLIS(nums)); // Output: 4
+    }
+}
+
+Problem 3: 0/1 Knapsack Problem
+Problem: Given weights and values of nnn items, put them in a knapsack of capacity WWW to maximize the total value.
+
+Approach:
+1.	dp[i][w]dp[i][w]dp[i][w]: Maximum value for the first iii items with capacity www.
+2.	Recurrence relation:
+o	If we don’t include the item: dp[i][w]=dp[i−1][w]dp[i][w] = dp[i-1][w]dp[i][w]=dp[i−1][w]
+o	If we include the item: dp[i][w]=max⁡(dp[i−1][w],dp[i−1][w−weight[i]]+value[i])dp[i][w] = \max(dp[i-1][w], dp[i-1][w - weight[i]] + value[i])dp[i][w]=max(dp[i−1][w],dp[i−1][w−weight[i]]+value[i])
+3.	Base case: dp[0][w]=0∀wdp[0][w] = 0 \quad \forall wdp[0][w]=0∀w
+
+Code:
+java
+CopyEdit
+public class Knapsack {
+    public static int knapsack(int[] weights, int[] values, int capacity) {
+        int n = weights.length;
+        int[][] dp = new int[n + 1][capacity + 1];
+
+        for (int i = 1; i <= n; i++) {
+            for (int w = 1; w <= capacity; w++) {
+                if (weights[i - 1] <= w) {
+                    dp[i][w] = Math.max(dp[i - 1][w], dp[i - 1][w - weights[i - 1]] + values[i - 1]);
+                } else {
+                    dp[i][w] = dp[i - 1][w];
+                }
+            }
+        }
+
+        return dp[n][capacity];
+    }
+
+    public static void main(String[] args) {
+        int[] weights = {1, 2, 3};
+        int[] values = {60, 100, 120};
+        int capacity = 5;
+
+        System.out.println(knapsack(weights, values, capacity)); // Output: 220
+    }
+}
+
+5. Summary of Concepts
+Problem Type	Key Idea	Examples
+Fibonacci/Climbing Stairs	Build from base cases	Fibonacci, Climbing Stairs
+Subsequence/Substring	Track state per index	Longest Increasing Subsequence, Palindromic Substring
+Knapsack	Decisions: Include/Exclude	0/1 Knapsack, Subset Sum
+Grid Problems	Build DP table for paths or sums	Unique Paths, Min Path Sum
+
+Suggested Practice Problems
+1.	LeetCode:
+o	Climbing Stairs
+o	Longest Increasing Subsequence
+o	0/1 Knapsack
+o	Coin Change
+o	House Robber
+Would you like a deeper dive into any specific problem or concept? 😊
+

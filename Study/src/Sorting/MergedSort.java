@@ -1,4 +1,4 @@
-package Generic;
+package Sorting;
 
 public class MergedSort {
 

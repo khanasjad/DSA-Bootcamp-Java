@@ -1,0 +1,288 @@
+Sliding Window in Depth: Beginner-Friendly and FAANG-Focused
+The Sliding Window technique is a powerful method for solving problems involving subarrays or substrings in arrays or strings. It is commonly tested in FAANG interviews due to its efficiency and simplicity.
+Let’s break down Sliding Window, explain how it works, and cover key concepts, examples, and common FAANG-style problems with solutions in Java.
+
+1. What is the Sliding Window Technique?
+The Sliding Window technique involves maintaining a subset of data (a "window") and moving it across a data structure to solve problems efficiently.
+Key Idea:
+•	Use two pointers (start and end) to represent a window in the array or string.
+•	Expand or shrink the window dynamically based on the problem constraints.
+
+When to Use Sliding Window?
+•	Problems involving subarrays or substrings with constraints like:
+o	Find the maximum/minimum in a subarray.
+o	Count the number of unique elements in a substring.
+o	Optimize performance by avoiding nested loops.
+
+2. Types of Sliding Window
+1. Fixed-Sized Sliding Window
+•	The window has a fixed size.
+•	Slide the window by removing the element that goes out and adding the new element.
+
+Example: Maximum Sum of a Subarray of Size kkk
+Problem: Find the maximum sum of any subarray of size kkk.
+
+Code:
+java
+CopyEdit
+public class MaxSubarraySum {
+    public static int maxSum(int[] nums, int k) {
+        int maxSum = 0, windowSum = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            windowSum += nums[i]; // Add the next element
+
+            if (i >= k - 1) { // Window size reached
+                maxSum = Math.max(maxSum, windowSum); // Update max sum
+                windowSum -= nums[i - (k - 1)]; // Remove the first element of the window
+            }
+        }
+
+        return maxSum;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {2, 1, 5, 1, 3, 2};
+        int k = 3;
+        System.out.println(maxSum(nums, k)); // Output: 9 (5 + 1 + 3)
+    }
+}
+
+2. Variable-Sized Sliding Window
+•	The window size changes dynamically based on the problem constraints.
+•	Expand the window by moving the end pointer.
+•	Shrink the window by moving the start pointer.
+
+Example: Minimum Size Subarray Sum
+Problem: Find the smallest subarray with a sum greater than or equal to sss.
+
+Code:
+java
+CopyEdit
+public class MinSubarraySum {
+    public static int minSubarraySum(int[] nums, int s) {
+        int minLength = Integer.MAX_VALUE, windowSum = 0;
+        int start = 0;
+
+        for (int end = 0; end < nums.length; end++) {
+            windowSum += nums[end]; // Expand the window
+
+            while (windowSum >= s) { // Shrink the window
+                minLength = Math.min(minLength, end - start + 1);
+                windowSum -= nums[start];
+                start++;
+            }
+        }
+
+        return minLength == Integer.MAX_VALUE ? 0 : minLength;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {2, 3, 1, 2, 4, 3};
+        int s = 7;
+        System.out.println(minSubarraySum(nums, s)); // Output: 2 ([4, 3])
+    }
+}
+
+3. Key Sliding Window Problems
+Problem 1: Longest Substring Without Repeating Characters
+Problem: Find the length of the longest substring without repeating characters.
+
+Approach:
+1.	Use a HashSet to track the characters in the current window.
+2.	Expand the window by adding characters until a duplicate is found.
+3.	Shrink the window by removing characters until there are no duplicates.
+
+Code:
+java
+CopyEdit
+import java.util.HashSet;
+
+public class LongestSubstringWithoutRepeating {
+    public static int lengthOfLongestSubstring(String s) {
+        HashSet<Character> set = new HashSet<>();
+        int maxLength = 0, start = 0;
+
+        for (int end = 0; end < s.length(); end++) {
+            while (set.contains(s.charAt(end))) {
+                set.remove(s.charAt(start));
+                start++; // Shrink the window
+            }
+
+            set.add(s.charAt(end)); // Expand the window
+            maxLength = Math.max(maxLength, end - start + 1);
+        }
+
+        return maxLength;
+    }
+
+    public static void main(String[] args) {
+        String s = "abcabcbb";
+        System.out.println(lengthOfLongestSubstring(s)); // Output: 3 ("abc")
+    }
+}
+
+Problem 2: Permutation in String
+Problem: Check if a string contains a permutation of another string.
+
+Approach:
+1.	Use a frequency map to track characters in the second string.
+2.	Use a sliding window of size equal to the second string.
+3.	Compare the window’s character counts with the target string.
+
+Code:
+java
+CopyEdit
+import java.util.HashMap;
+
+public class PermutationInString {
+    public static boolean checkInclusion(String s1, String s2) {
+        HashMap<Character, Integer> targetMap = new HashMap<>();
+        for (char c : s1.toCharArray()) {
+            targetMap.put(c, targetMap.getOrDefault(c, 0) + 1);
+        }
+
+        HashMap<Character, Integer> windowMap = new HashMap<>();
+        int start = 0, matches = 0;
+
+        for (int end = 0; end < s2.length(); end++) {
+            char c = s2.charAt(end);
+            windowMap.put(c, windowMap.getOrDefault(c, 0) + 1);
+
+            if (windowMap.get(c).equals(targetMap.get(c))) {
+                matches++;
+            }
+
+            if (end >= s1.length() - 1) {
+                if (matches == targetMap.size()) return true;
+
+                char startChar = s2.charAt(start);
+                if (windowMap.get(startChar).equals(targetMap.get(startChar))) {
+                    matches--;
+                }
+                windowMap.put(startChar, windowMap.get(startChar) - 1);
+                if (windowMap.get(startChar) == 0) {
+                    windowMap.remove(startChar);
+                }
+                start++;
+            }
+        }
+
+        return false;
+    }
+
+    public static void main(String[] args) {
+        String s1 = "ab", s2 = "eidbaooo";
+        System.out.println(checkInclusion(s1, s2)); // Output: true
+    }
+}
+
+Problem 3: Sliding Window Maximum
+Problem: Find the maximum element in every sliding window of size kkk.
+
+Approach:
+1.	Use a Deque (double-ended queue) to store indices of useful elements.
+2.	For each window:
+o	Remove elements outside the current window.
+o	Remove smaller elements that are no longer useful.
+
+Code:
+java
+CopyEdit
+import java.util.*;
+
+public class SlidingWindowMaximum {
+    public static int[] maxSlidingWindow(int[] nums, int k) {
+        Deque<Integer> deque = new LinkedList<>();
+        int[] result = new int[nums.length - k + 1];
+        int index = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            // Remove elements outside the window
+            if (!deque.isEmpty() && deque.peekFirst() < i - k + 1) {
+                deque.pollFirst();
+            }
+
+            // Remove smaller elements that are no longer useful
+            while (!deque.isEmpty() && nums[deque.peekLast()] < nums[i]) {
+                deque.pollLast();
+            }
+
+            deque.addLast(i); // Add the current element
+
+            // Record the maximum of the window
+            if (i >= k - 1) {
+                result[index++] = nums[deque.peekFirst()];
+            }
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {1, 3, -1, -3, 5, 3, 6, 7};
+        int k = 3;
+        System.out.println(Arrays.toString(maxSlidingWindow(nums, k))); // Output: [3, 3, 5, 5, 6, 7]
+    }
+}
+
+Problem 4: Find All Anagrams in a String
+Problem: Find all starting indices of substrings in sss that are anagrams of ppp.
+
+Code:
+java
+CopyEdit
+import java.util.*;
+
+public class FindAllAnagrams {
+    public static List<Integer> findAnagrams(String s, String p) {
+        List<Integer> result = new ArrayList<>();
+        HashMap<Character, Integer> targetMap = new HashMap<>();
+
+        for (char c : p.toCharArray()) {
+            targetMap.put(c, targetMap.getOrDefault(c, 0) + 1);
+        }
+
+        HashMap<Character, Integer> windowMap = new HashMap<>();
+        int start = 0;
+
+        for (int end = 0; end < s.length(); end++) {
+            char c = s.charAt(end);
+            windowMap.put(c, windowMap.getOrDefault(c, 0) + 1);
+
+            if (end >= p.length() - 1) {
+                if (windowMap.equals(targetMap)) {
+                    result.add(start);
+                }
+
+                char startChar = s.charAt(start);
+                windowMap.put(startChar, windowMap.get(startChar) - 1);
+                if (windowMap.get(startChar) == 0) {
+                    windowMap.remove(startChar);
+                }
+                start++;
+            }
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        String s = "cbaebabacd", p = "abc";
+        System.out.println(findAnagrams(s, p)); // Output: [0, 6]
+    }
+}
+
+4. Summary of Sliding Window Concepts
+Problem Type	Sliding Window Type	Examples
+Fixed Window Size	Fixed Window	Maximum Sum of Subarray, Sliding Window Maximum
+Variable Window Size	Expand/Shrink	Minimum Size Subarray, Longest Substring
+Window with Character Counts	Frequency Map	Permutation in String, Find All Anagrams
+
+Suggested Practice Problems:
+1.	LeetCode:
+o	Longest Substring Without Repeating Characters
+o	Sliding Window Maximum
+o	Find All Anagrams in a String
+o	Minimum Window Substring
+

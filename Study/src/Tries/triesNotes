@@ -1,0 +1,297 @@
+Tries in Depth: Beginner-Friendly and FAANG-Focused
+Tries (pronounced "tries" as in "retrieval") are a specialized tree-like data structure used to store strings or sequences in a way that facilitates fast search, insert, and prefix operations. Tries are widely used in FAANG interviews for problems involving prefix search, autocomplete systems, and word dictionaries.
+Let’s break down tries, cover their implementation and operations, and solve common FAANG-style problems with Java code.
+
+1. What is a Trie?
+A Trie is a tree where:
+1.	Each node represents a character.
+2.	Paths from the root to a leaf node represent words or sequences.
+
+Key Features of a Trie:
+•	Prefix Search: Tries allow efficient searching for words starting with a specific prefix.
+•	Space Efficiency: Tries share common prefixes, saving space for storing similar strings.
+•	Fast Operations:
+o	Insert: O(L)O(L)O(L), where LLL is the length of the word.
+o	Search: O(L)O(L)O(L).
+
+Example Trie:
+Let’s store the words ["cat", "car", "cart"] in a trie.
+Trie structure:
+css
+CopyEdit
+       (root)
+       /  \
+      c    d
+     / \
+    a   o
+   / \
+  t   r
+     /
+    t
+•	The word "cat" ends at the t node.
+•	The word "car" ends at the r node.
+•	The word "cart" ends at the second t node.
+
+2. Implementing a Trie in Java
+Trie Node Class
+Each node of a Trie contains:
+1.	A map (or array) of child nodes.
+2.	A flag (isEndOfWord) indicating whether the node marks the end of a word.
+java
+CopyEdit
+import java.util.HashMap;
+
+class TrieNode {
+    HashMap<Character, TrieNode> children;
+    boolean isEndOfWord;
+
+    public TrieNode() {
+        children = new HashMap<>();
+        isEndOfWord = false;
+    }
+}
+
+Trie Class
+The Trie class supports the following operations:
+1.	Insert a word.
+2.	Search for a word.
+3.	Check for a prefix.
+java
+CopyEdit
+public class Trie {
+    private TrieNode root;
+
+    public Trie() {
+        root = new TrieNode();
+    }
+
+    // Insert a word into the Trie
+    public void insert(String word) {
+        TrieNode current = root;
+
+        for (char c : word.toCharArray()) {
+            current.children.putIfAbsent(c, new TrieNode());
+            current = current.children.get(c);
+        }
+
+        current.isEndOfWord = true;
+    }
+
+    // Search for a word in the Trie
+    public boolean search(String word) {
+        TrieNode current = root;
+
+        for (char c : word.toCharArray()) {
+            if (!current.children.containsKey(c)) {
+                return false; // Word not found
+            }
+            current = current.children.get(c);
+        }
+
+        return current.isEndOfWord; // Return true if it's the end of a word
+    }
+
+    // Check if a prefix exists in the Trie
+    public boolean startsWith(String prefix) {
+        TrieNode current = root;
+
+        for (char c : prefix.toCharArray()) {
+            if (!current.children.containsKey(c)) {
+                return false; // Prefix not found
+            }
+            current = current.children.get(c);
+        }
+
+        return true; // Prefix exists
+    }
+}
+
+Example Usage:
+java
+CopyEdit
+public class TrieExample {
+    public static void main(String[] args) {
+        Trie trie = new Trie();
+
+        // Insert words
+        trie.insert("cat");
+        trie.insert("car");
+        trie.insert("cart");
+
+        // Search words
+        System.out.println(trie.search("cat"));    // Output: true
+        System.out.println(trie.search("can"));    // Output: false
+
+        // Prefix check
+        System.out.println(trie.startsWith("ca")); // Output: true
+        System.out.println(trie.startsWith("bat"));// Output: false
+    }
+}
+
+3. Key Operations in a Trie
+Operation	Description	Time Complexity
+Insert	Add a word to the trie.	O(L)O(L)O(L)
+Search	Check if a word exists in the trie.	O(L)O(L)O(L)
+Prefix Search	Check if a prefix exists in the trie.	O(L)O(L)O(L)
+Autocomplete	Return all words that start with a given prefix.	Depends on output size
+
+4. FAANG-Style Problems
+Problem 1: Word Search II (Using a Trie)
+Problem: Given a 2D grid of letters and a list of words, find all words in the grid that exist in the word list.
+
+Approach:
+1.	Insert all words into a Trie.
+2.	Use DFS to traverse the grid, checking each cell against the Trie.
+3.	Use backtracking to avoid revisiting cells.
+
+Code:
+java
+CopyEdit
+import java.util.*;
+
+public class WordSearch {
+    private static TrieNode buildTrie(String[] words) {
+        TrieNode root = new TrieNode();
+        for (String word : words) {
+            TrieNode current = root;
+            for (char c : word.toCharArray()) {
+                current.children.putIfAbsent(c, new TrieNode());
+                current = current.children.get(c);
+            }
+            current.isEndOfWord = true;
+        }
+        return root;
+    }
+
+    private static void dfs(char[][] board, int row, int col, TrieNode node, StringBuilder path, Set<String> result) {
+        // Check boundaries
+        if (row < 0 || col < 0 || row >= board.length || col >= board[0].length || board[row][col] == '#') {
+            return;
+        }
+
+        char c = board[row][col];
+        if (!node.children.containsKey(c)) return;
+
+        path.append(c);
+        node = node.children.get(c);
+
+        if (node.isEndOfWord) result.add(path.toString());
+
+        char temp = board[row][col];
+        board[row][col] = '#'; // Mark as visited
+
+        // Explore neighbors
+        dfs(board, row + 1, col, node, path, result);
+        dfs(board, row - 1, col, node, path, result);
+        dfs(board, row, col + 1, node, path, result);
+        dfs(board, row, col - 1, node, path, result);
+
+        board[row][col] = temp; // Backtrack
+        path.deleteCharAt(path.length() - 1);
+    }
+
+    public static List<String> findWords(char[][] board, String[] words) {
+        TrieNode root = buildTrie(words);
+        Set<String> result = new HashSet<>();
+
+        for (int row = 0; row < board.length; row++) {
+            for (int col = 0; col < board[0].length; col++) {
+                dfs(board, row, col, root, new StringBuilder(), result);
+            }
+        }
+
+        return new ArrayList<>(result);
+    }
+
+    public static void main(String[] args) {
+        char[][] board = {
+            {'o', 'a', 'a', 'n'},
+            {'e', 't', 'a', 'e'},
+            {'i', 'h', 'k', 'r'},
+            {'i', 'f', 'l', 'v'}
+        };
+        String[] words = {"oath", "pea", "eat", "rain"};
+        System.out.println(findWords(board, words)); // Output: [oath, eat]
+    }
+}
+
+Problem 2: Autocomplete System
+Problem: Design an autocomplete system where users can type a prefix, and it returns all words that match the prefix.
+
+Approach:
+1.	Insert all words into a Trie.
+2.	Traverse the Trie up to the prefix.
+3.	Collect all words starting from the prefix node.
+
+Code:
+java
+CopyEdit
+import java.util.*;
+
+public class AutocompleteSystem {
+    private TrieNode root;
+
+    public AutocompleteSystem() {
+        root = new TrieNode();
+    }
+
+    public void insert(String word) {
+        TrieNode current = root;
+
+        for (char c : word.toCharArray()) {
+            current.children.putIfAbsent(c, new TrieNode());
+            current = current.children.get(c);
+        }
+
+        current.isEndOfWord = true;
+    }
+
+    public List<String> getWordsWithPrefix(String prefix) {
+        List<String> result = new ArrayList<>();
+        TrieNode current = root;
+
+        for (char c : prefix.toCharArray()) {
+            if (!current.children.containsKey(c)) return result; // No match
+            current = current.children.get(c);
+        }
+
+        dfs(current, new StringBuilder(prefix), result);
+        return result;
+    }
+
+    private void dfs(TrieNode node, StringBuilder path, List<String> result) {
+        if (node.isEndOfWord) result.add(path.toString());
+
+        for (char c : node.children.keySet()) {
+            path.append(c);
+            dfs(node.children.get(c), path, result);
+            path.deleteCharAt(path.length() - 1); // Backtrack
+        }
+    }
+
+    public static void main(String[] args) {
+        AutocompleteSystem autocomplete = new AutocompleteSystem();
+        autocomplete.insert("cat");
+        autocomplete.insert("car");
+        autocomplete.insert("cart");
+        autocomplete.insert("dog");
+
+        System.out.println(autocomplete.getWordsWithPrefix("ca")); // Output: [cat, car, cart]
+    }
+}
+
+5. Summary of Trie Concepts
+Operation	Description	Example
+Insert a Word	Add a word to the trie	Insert "cat", "car", "cart"
+Search for a Word	Check if a word exists in the trie	Search for "cat"
+Prefix Search	Find all words starting with a prefix	Prefix "ca" → "cat", "car", "cart"
+Applications	Word Search, Autocomplete, Dictionary	Word Search II, Autocomplete System
+
+Suggested Practice Problems:
+1.	LeetCode:
+o	Implement Trie (Prefix Tree)
+o	Word Search II
+o	Replace Words
+o	Design Add and Search Words Data Structure
+Would you like to dive deeper into any specific Trie problem or concept? 😊
+

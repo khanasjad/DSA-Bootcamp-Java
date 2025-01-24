@@ -1,4 +1,4 @@
-package Generic;
+package LinkedList;
 
 import java.util.LinkedList;
 import java.util.Queue;

@@ -1,0 +1,303 @@
+Graphs in Depth: Beginner-Friendly and FAANG-Focused
+Graphs are a fundamental data structure in computer science and are highly favored in FAANG interviews. They model real-world relationships and are used to solve complex problems like routing, social network analysis, and dependency resolution.
+Let’s dive into graphs, breaking them down step-by-step, with practical examples in Java, key concepts, and common interview problems.
+
+1. What is a Graph?
+A graph is a collection of:
+1.	Vertices (Nodes): Represent entities.
+2.	Edges (Connections): Represent relationships between nodes.
+
+Types of Graphs
+1.	Directed Graph: Edges have a direction (e.g., A→BA \to BA→B).
+2.	Undirected Graph: Edges do not have a direction (e.g., A−BA - BA−B).
+3.	Weighted Graph: Edges have weights (e.g., cost, distance).
+4.	Unweighted Graph: All edges have the same weight.
+5.	Cyclic Graph: Contains cycles (a path that starts and ends at the same node).
+6.	Acyclic Graph: Does not contain cycles.
+
+Graph Representation
+Adjacency Matrix
+•	A 2D array where matrix[i][j] is 1 if there is an edge between iii and jjj, otherwise 0.
+•	Space complexity: O(V2)O(V^2)O(V2).
+java
+CopyEdit
+int[][] adjacencyMatrix = {
+    {0, 1, 0},
+    {1, 0, 1},
+    {0, 1, 0}
+};
+
+Adjacency List
+•	Each vertex has a list of its neighbors.
+•	Space complexity: O(V+E)O(V + E)O(V+E).
+java
+CopyEdit
+import java.util.*;
+
+public class Graph {
+    private Map<Integer, List<Integer>> adjacencyList;
+
+    public Graph() {
+        adjacencyList = new HashMap<>();
+    }
+
+    public void addEdge(int source, int destination) {
+        adjacencyList.putIfAbsent(source, new ArrayList<>());
+        adjacencyList.get(source).add(destination);
+    }
+
+    public List<Integer> getNeighbors(int node) {
+        return adjacencyList.getOrDefault(node, new ArrayList<>());
+    }
+
+    public static void main(String[] args) {
+        Graph graph = new Graph();
+        graph.addEdge(0, 1);
+        graph.addEdge(1, 2);
+        graph.addEdge(2, 0);
+
+        System.out.println(graph.adjacencyList);
+        // Output: {0=[1], 1=[2], 2=[0]}
+    }
+}
+
+2. Graph Traversal
+Breadth-First Search (BFS)
+•	Key Idea: Explore nodes level by level using a queue.
+•	Applications:
+o	Finding the shortest path in an unweighted graph.
+o	Detecting connected components.
+
+BFS Code
+java
+CopyEdit
+import java.util.*;
+
+public class BFSExample {
+    public static void bfs(Graph graph, int startNode) {
+        Queue<Integer> queue = new LinkedList<>();
+        Set<Integer> visited = new HashSet<>();
+
+        queue.add(startNode);
+        visited.add(startNode);
+
+        while (!queue.isEmpty()) {
+            int current = queue.poll();
+            System.out.print(current + " "); // Process the node
+
+            for (int neighbor : graph.getNeighbors(current)) {
+                if (!visited.contains(neighbor)) {
+                    queue.add(neighbor);
+                    visited.add(neighbor);
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Graph graph = new Graph();
+        graph.addEdge(0, 1);
+        graph.addEdge(1, 2);
+        graph.addEdge(2, 0);
+
+        bfs(graph, 0); // Output: 0 1 2
+    }
+}
+
+Depth-First Search (DFS)
+•	Key Idea: Explore as far as possible along each branch before backtracking using recursion or a stack.
+•	Applications:
+o	Topological sorting.
+o	Cycle detection.
+o	Pathfinding in a maze.
+
+DFS Code (Recursive)
+java
+CopyEdit
+import java.util.*;
+
+public class DFSExample {
+    public static void dfs(Graph graph, int currentNode, Set<Integer> visited) {
+        visited.add(currentNode);
+        System.out.print(currentNode + " "); // Process the node
+
+        for (int neighbor : graph.getNeighbors(currentNode)) {
+            if (!visited.contains(neighbor)) {
+                dfs(graph, neighbor, visited);
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Graph graph = new Graph();
+        graph.addEdge(0, 1);
+        graph.addEdge(1, 2);
+        graph.addEdge(2, 0);
+
+        Set<Integer> visited = new HashSet<>();
+        dfs(graph, 0, visited); // Output: 0 1 2
+    }
+}
+
+3. FAANG-Style Graph Problems
+Problem 1: Number of Connected Components
+Problem: Given a graph, count the number of connected components.
+
+Approach:
+1.	Use DFS or BFS to visit all nodes in a component.
+2.	Count the number of DFS/BFS calls.
+
+Code:
+java
+CopyEdit
+public class ConnectedComponents {
+    public static int countComponents(Graph graph, int numNodes) {
+        Set<Integer> visited = new HashSet<>();
+        int count = 0;
+
+        for (int node = 0; node < numNodes; node++) {
+            if (!visited.contains(node)) {
+                dfs(graph, node, visited);
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    private static void dfs(Graph graph, int currentNode, Set<Integer> visited) {
+        visited.add(currentNode);
+        for (int neighbor : graph.getNeighbors(currentNode)) {
+            if (!visited.contains(neighbor)) {
+                dfs(graph, neighbor, visited);
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Graph graph = new Graph();
+        graph.addEdge(0, 1);
+        graph.addEdge(2, 3);
+
+        System.out.println(countComponents(graph, 4)); // Output: 2
+    }
+}
+
+Problem 2: Cycle Detection (Undirected Graph)
+Problem: Detect if an undirected graph contains a cycle.
+
+Approach:
+1.	Use DFS and track parent nodes to detect back edges.
+2.	If a node is visited and is not the parent, a cycle exists.
+
+Code:
+java
+CopyEdit
+public class CycleDetection {
+    public static boolean hasCycle(Graph graph, int numNodes) {
+        Set<Integer> visited = new HashSet<>();
+
+        for (int node = 0; node < numNodes; node++) {
+            if (!visited.contains(node) && dfs(graph, node, -1, visited)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean dfs(Graph graph, int currentNode, int parent, Set<Integer> visited) {
+        visited.add(currentNode);
+
+        for (int neighbor : graph.getNeighbors(currentNode)) {
+            if (!visited.contains(neighbor)) {
+                if (dfs(graph, neighbor, currentNode, visited)) {
+                    return true;
+                }
+            } else if (neighbor != parent) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static void main(String[] args) {
+        Graph graph = new Graph();
+        graph.addEdge(0, 1);
+        graph.addEdge(1, 2);
+        graph.addEdge(2, 0);
+
+        System.out.println(hasCycle(graph, 3)); // Output: true
+    }
+}
+
+Problem 3: Shortest Path in an Unweighted Graph
+Problem: Find the shortest path between two nodes in an unweighted graph.
+
+Approach:
+•	Use BFS since it explores the shortest path in an unweighted graph.
+
+Code:
+java
+CopyEdit
+public class ShortestPath {
+    public static int shortestPath(Graph graph, int start, int end) {
+        Queue<int[]> queue = new LinkedList<>(); // Pair: {node, distance}
+        Set<Integer> visited = new HashSet<>();
+
+        queue.add(new int[]{start, 0});
+        visited.add(start);
+
+        while (!queue.isEmpty()) {
+            int[] current = queue.poll();
+            int node = current[0];
+            int distance = current[1];
+
+            if (node == end) return distance;
+
+            for (int neighbor : graph.getNeighbors(node)) {
+                if (!visited.contains(neighbor)) {
+                    queue.add(new int[]{neighbor, distance + 1});
+                    visited.add(neighbor);
+                }
+            }
+        }
+
+        return -1; // No path found
+    }
+
+    public static void main(String[] args) {
+        Graph graph = new Graph();
+        graph.addEdge(0, 1);
+        graph.addEdge(1, 2);
+        graph.addEdge(2, 3);
+
+        System.out.println(shortestPath(graph, 0, 3)); // Output: 3
+    }
+}
+
+4. Graph Algorithms
+1.	Dijkstra’s Algorithm:
+o	Finds the shortest path in a weighted graph (non-negative weights).
+2.	Kruskal’s and Prim’s Algorithms:
+o	Used to find the Minimum Spanning Tree (MST).
+3.	Bellman-Ford Algorithm:
+o	Finds the shortest path in a weighted graph, including negative weights.
+4.	Floyd-Warshall Algorithm:
+o	Finds shortest paths between all pairs of nodes.
+
+5. Summary of Concepts
+Aspect	BFS	DFS
+Key Idea	Level-by-level exploration	As deep as possible, then backtrack
+Data Structure	Queue	Stack or Recursion
+Applications	Shortest Path, Connected Components	Topological Sort, Cycle Detection
+Time Complexity	O(V+E)O(V + E)O(V+E)	O(V+E)O(V + E)O(V+E)
+
+Suggested Problems for Practice
+1.	LeetCode:
+o	Number of Islands
+o	Course Schedule
+o	Shortest Path in Binary Matrix
+Would you like a deeper dive into any specific graph algorithm or problem? 😊
+

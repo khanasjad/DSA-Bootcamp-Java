@@ -1,12 +1,5 @@
 package Generic;
 
-import jdk.internal.math.FormattedFloatingDecimal;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Scanner;
-import java.util.Stack;
-
 enum COUNTRY {
     INDIA, USA, UK, CANADA;
 }
@@ -54,20 +47,20 @@ public class Main {
         String value1 = "USA";
         String value2 = "UK";
         String value3 = "CANADA";
-        Main nation = new Main(COUNTRY.valueOf(value));
+        Sorting.Main nation = new Sorting.Main(COUNTRY.valueOf(value));
 
         nation.test();
 
-        Main nation1 = new Main(COUNTRY.valueOf(value1));
+        Sorting.Main nation1 = new Sorting.Main(COUNTRY.valueOf(value1));
 
         nation1.test();
         nation.test();
 
-        Main nation2 = new Main(COUNTRY.valueOf(value2));
+        Sorting.Main nation2 = new Sorting.Main(COUNTRY.valueOf(value2));
 
         nation2.test();
 
-        Main nation3 = new Main(COUNTRY.valueOf(value3));
+        Sorting.Main nation3 = new Sorting.Main(COUNTRY.valueOf(value3));
         nation3.test();
 
     }

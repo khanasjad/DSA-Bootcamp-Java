@@ -1,4 +1,4 @@
-package Generic;
+package HashMap;
 
 import jdk.internal.math.FormattedFloatingDecimal;
 

@@ -1,0 +1,253 @@
+Number Theory in Depth: Beginner-Friendly and FAANG-Focused
+Number theory is a branch of mathematics dealing with properties and relationships of numbers, particularly integers. It has important applications in FAANG interviews, especially in problems involving prime numbers, modular arithmetic, greatest common divisor (GCD), and divisors.
+Let’s dive into number theory, break it down step by step, and cover key concepts, examples, and common interview problems.
+
+1. Key Concepts in Number Theory
+1.1 Divisors
+•	A number ddd is a divisor of nnn if n%d==0n \% d == 0n%d==0.
+Example: Divisors of 12 are: 1,2,3,4,6,121, 2, 3, 4, 6, 121,2,3,4,6,12.
+Code to Find Divisors:
+java
+CopyEdit
+public class Divisors {
+    public static void printDivisors(int n) {
+        for (int i = 1; i * i <= n; i++) {
+            if (n % i == 0) {
+                System.out.print(i + " ");
+                if (i != n / i) { // Avoid double printing the square root
+                    System.out.print(n / i + " ");
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        int n = 12;
+        printDivisors(n); // Output: 1 12 2 6 3 4
+    }
+}
+
+1.2 Prime Numbers
+•	A prime number is a number greater than 1 that has no divisors other than 1 and itself.
+Example: Primes below 10 are: 2,3,5,72, 3, 5, 72,3,5,7.
+Code to Check if a Number is Prime:
+java
+CopyEdit
+public class PrimeCheck {
+    public static boolean isPrime(int n) {
+        if (n <= 1) return false;
+        for (int i = 2; i * i <= n; i++) { // Check up to √n
+            if (n % i == 0) return false;
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        int n = 29;
+        System.out.println(isPrime(n)); // Output: true
+    }
+}
+
+1.3 Greatest Common Divisor (GCD)
+•	The GCD of two numbers is the largest number that divides both.
+Example: GCD of 12 and 18 is 6.
+Euclidean Algorithm:
+1.	gcd(a,b)=gcd(b,a%b)\text{gcd}(a, b) = \text{gcd}(b, a \% b)gcd(a,b)=gcd(b,a%b)
+2.	Base case: gcd(a,0)=a\text{gcd}(a, 0) = agcd(a,0)=a
+Code:
+java
+CopyEdit
+public class GCD {
+    public static int gcd(int a, int b) {
+        if (b == 0) return a;
+        return gcd(b, a % b);
+    }
+
+    public static void main(String[] args) {
+        int a = 12, b = 18;
+        System.out.println(gcd(a, b)); // Output: 6
+    }
+}
+
+1.4 Least Common Multiple (LCM)
+•	The LCM of two numbers is the smallest number divisible by both.
+Formula:
+lcm(a,b)=∣a⋅b∣gcd(a,b)\text{lcm}(a, b) = \frac{|a \cdot b|}{\text{gcd}(a, b)}lcm(a,b)=gcd(a,b)∣a⋅b∣
+Code:
+java
+CopyEdit
+public class LCM {
+    public static int lcm(int a, int b) {
+        return (a * b) / GCD.gcd(a, b); // Use the GCD function
+    }
+
+    public static void main(String[] args) {
+        int a = 12, b = 18;
+        System.out.println(lcm(a, b)); // Output: 36
+    }
+}
+
+1.5 Modular Arithmetic
+•	Modular arithmetic deals with the remainder when one number is divided by another.
+Key Properties:
+1.	(a+b)%c=[(a%c)+(b%c)]%c(a + b) \% c = [(a \% c) + (b \% c)] \% c(a+b)%c=[(a%c)+(b%c)]%c
+2.	(a−b)%c=[(a%c)−(b%c)+c]%c(a - b) \% c = [(a \% c) - (b \% c) + c] \% c(a−b)%c=[(a%c)−(b%c)+c]%c
+3.	(a⋅b)%c=[(a%c)⋅(b%c)]%c(a \cdot b) \% c = [(a \% c) \cdot (b \% c)] \% c(a⋅b)%c=[(a%c)⋅(b%c)]%c
+
+1.6 Sieve of Eratosthenes
+•	An efficient algorithm to find all prime numbers up to nnn.
+Steps:
+1.	Create a boolean array for marking non-primes.
+2.	Start with p=2p = 2p=2 and mark all multiples of ppp as non-prime.
+3.	Move to the next unmarked number and repeat.
+Code:
+java
+CopyEdit
+import java.util.Arrays;
+
+public class Sieve {
+    public static void sieveOfEratosthenes(int n) {
+        boolean[] isPrime = new boolean[n + 1];
+        Arrays.fill(isPrime, true);
+        isPrime[0] = isPrime[1] = false;
+
+        for (int p = 2; p * p <= n; p++) {
+            if (isPrime[p]) {
+                for (int i = p * p; i <= n; i += p) {
+                    isPrime[i] = false;
+                }
+            }
+        }
+
+        for (int i = 0; i <= n; i++) {
+            if (isPrime[i]) System.out.print(i + " ");
+        }
+    }
+
+    public static void main(String[] args) {
+        sieveOfEratosthenes(30); // Output: 2 3 5 7 11 13 17 19 23 29
+    }
+}
+
+2. FAANG-Style Problems
+Problem 1: Count Prime Numbers
+Problem: Count the number of prime numbers less than nnn.
+Approach:
+Use the Sieve of Eratosthenes.
+Code:
+java
+CopyEdit
+public class CountPrimes {
+    public static int countPrimes(int n) {
+        if (n <= 2) return 0;
+
+        boolean[] isPrime = new boolean[n];
+        Arrays.fill(isPrime, true);
+
+        for (int p = 2; p * p < n; p++) {
+            if (isPrime[p]) {
+                for (int i = p * p; i < n; i += p) {
+                    isPrime[i] = false;
+                }
+            }
+        }
+
+        int count = 0;
+        for (int i = 2; i < n; i++) {
+            if (isPrime[i]) count++;
+        }
+
+        return count;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(countPrimes(10)); // Output: 4 (2, 3, 5, 7)
+    }
+}
+
+Problem 2: Find GCD of an Array
+Problem: Find the GCD of an array of integers.
+Approach:
+Iteratively find the GCD of all elements.
+Code:
+java
+CopyEdit
+public class ArrayGCD {
+    public static int findGCD(int[] nums) {
+        int result = nums[0];
+        for (int num : nums) {
+            result = GCD.gcd(result, num);
+            if (result == 1) return 1; // Early exit for GCD = 1
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {12, 15, 21};
+        System.out.println(findGCD(nums)); // Output: 3
+    }
+}
+
+Problem 3: Modular Exponentiation
+Problem: Calculate (ab)%c(a^b) \% c(ab)%c efficiently.
+Approach:
+Use the property:
+ab%c=(a%c⋅ab−1%c)%ca^b \% c = (a \% c \cdot a^{b-1} \% c) \% cab%c=(a%c⋅ab−1%c)%c
+Code:
+java
+CopyEdit
+public class ModularExponentiation {
+    public static int modExp(int a, int b, int c) {
+        int result = 1;
+        a = a % c;
+
+        while (b > 0) {
+            if ((b & 1) == 1) { // If b is odd
+                result = (result * a) % c;
+            }
+            a = (a * a) % c; // Square the base
+            b >>= 1; // Divide b by 2
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(modExp(2, 10, 1000)); // Output: 24
+    }
+}
+
+Problem 4: LCM of an Array
+Problem: Find the LCM of an array of integers.
+Code:
+java
+CopyEdit
+public class ArrayLCM {
+    public static int findLCM(int[] nums) {
+        int result = nums[0];
+        for (int num : nums) {
+            result = LCM.lcm(result, num);
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {4, 6, 8};
+        System.out.println(findLCM(nums)); // Output: 24
+    }
+}
+
+Problem 5: Count Numbers with Unique Prime Factors
+Problem: Count numbers below nnn that have exactly kkk distinct prime factors.
+Approach:
+Use a sieve-like method to count the prime factors for each number.
+
+Suggested Practice Problems
+1.	LeetCode:
+o	Count Primes
+o	Greatest Common Divisor of Strings
+o	Binary GCD
+o	LCM Triplets
+2.	HackerRank:
+o	Number Theory Challenges
+
