@@ -6,7 +6,7 @@ import java.util.Scanner;
 import java.util.Stack;
 
 
-class Main {
+class Bubble {
 
     public static void main(String args[]) {
 

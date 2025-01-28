@@ -5,11 +5,11 @@ enum COUNTRY {
 }
 
 
-public class Main {
+public class Enum {
 
     COUNTRY country;
 
-    public Main(COUNTRY country){
+    public Enum(COUNTRY country){
         this.country  = country;
     }
 
@@ -47,21 +47,21 @@ public class Main {
         String value1 = "USA";
         String value2 = "UK";
         String value3 = "CANADA";
-        Sorting.Main nation = new Sorting.Main(COUNTRY.valueOf(value));
-
-        nation.test();
-
-        Sorting.Main nation1 = new Sorting.Main(COUNTRY.valueOf(value1));
-
-        nation1.test();
-        nation.test();
-
-        Sorting.Main nation2 = new Sorting.Main(COUNTRY.valueOf(value2));
-
-        nation2.test();
-
-        Sorting.Main nation3 = new Sorting.Main(COUNTRY.valueOf(value3));
-        nation3.test();
+//        Sorting.Main nation = new Sorting.Main(COUNTRY.valueOf(value));
+//
+//        nation.test();
+//
+//        Sorting.Main nation1 = new Sorting.Main(COUNTRY.valueOf(value1));
+//
+//        nation1.test();
+//        nation.test();
+//
+//        Sorting.Main nation2 = new Sorting.Main(COUNTRY.valueOf(value2));
+//
+//        nation2.test();
+//
+//        Sorting.Main nation3 = new Sorting.Main(COUNTRY.valueOf(value3));
+//        nation3.test();
 
     }
 }

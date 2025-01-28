@@ -8,7 +8,7 @@ import java.util.*;
 
 import java.util.ArrayList;
 
-public class Main {
+public class ListMapSet {
 
     public static void main(String[] args) {
         System.out.println("************************************ARRAY LIST***************************************************");

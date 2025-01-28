@@ -21,7 +21,7 @@ class Abc{
         return obj;
     }
 }
-public class Main {
+public class Singleton {
 
     public static void main(String[] args) {
         System.out.println("***********************Singleton******************");
