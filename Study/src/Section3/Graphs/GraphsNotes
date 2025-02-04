@@ -295,7 +295,7 @@ Applications	Shortest Path, Connected Components	Topological Sort, Cycle Detecti
 Time Complexity	O(V+E)O(V + E)O(V+E)	O(V+E)O(V + E)O(V+E)
 
 Suggested Problems for Practice
-1.	LeetCode:
+1.	LeetCode1:
 o	Number of Islands
 o	Course Schedule
 o	Shortest Path in Binary Matrix

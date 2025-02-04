@@ -280,7 +280,7 @@ Variable Window Size	Expand/Shrink	Minimum Size Subarray, Longest Substring
 Window with Character Counts	Frequency Map	Permutation in String, Find All Anagrams
 
 Suggested Practice Problems:
-1.	LeetCode:
+1.	LeetCode1:
 o	Longest Substring Without Repeating Characters
 o	Sliding Window Maximum
 o	Find All Anagrams in a String

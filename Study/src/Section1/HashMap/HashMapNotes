@@ -71,7 +71,7 @@ size()	Returns the number of key-value pairs in the map.	map.size();
 clear()	Removes all key-value pairs from the map.	map.clear();
 
 Example Problems Using HashMap
-1. Two Sum (LeetCode 1)
+1. Two Sum (LeetCode1 1)
 Problem: Given an array of integers, find two numbers that add up to a target value.
 Approach:
 •	Use a HashMap to store the difference between the target and each element as you iterate through the array.
@@ -101,7 +101,7 @@ public class TwoSum {
     }
 }
 
-2. Group Anagrams (LeetCode 49)
+2. Group Anagrams (LeetCode1 49)
 Problem: Group strings that are anagrams of each other.
 Approach:
 •	Use a HashMap where the key is the sorted string, and the value is a list of all its anagrams.
@@ -130,7 +130,7 @@ public class GroupAnagrams {
     }
 }
 
-3. Find the First Non-Repeating Character (LeetCode 387)
+3. Find the First Non-Repeating Character (LeetCode1 387)
 Problem: Find the first character in a string that doesn’t repeat.
 Approach:
 •	Use a HashMap to count the frequency of each character.
@@ -178,7 +178,7 @@ o	Know how Java handles collisions (linked list and tree structures).
 o	Frequency counting.
 o	Caching intermediate results (e.g., dynamic programming).
 3.	Practice:
-o	Solve LeetCode problems like Two Sum, Group Anagrams, and Subarray Sum Equals K.
+o	Solve LeetCode1 problems like Two Sum, Group Anagrams, and Subarray Sum Equals K.
 4.	Avoid Overuse:
 o	For small datasets, simple arrays may be more efficient.
 With these concepts and examples, you're ready to confidently tackle HashMap

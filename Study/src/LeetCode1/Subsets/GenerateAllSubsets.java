@@ -1,4 +1,4 @@
-package LeetCode.Subsets;
+package LeetCode1.Subsets;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package LeetCode.SlidingWindows;
+package LeetCode1.SlidingWindows;
 
 public class MaxSumSubarraySizeK {
     public static void main(String[] args) {

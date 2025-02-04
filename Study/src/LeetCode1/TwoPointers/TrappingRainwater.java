@@ -1,4 +1,4 @@
-package LeetCode.TwoPointers;
+package LeetCode1.TwoPointers;
 
 public class TrappingRainwater {
     public static void main(String[] args) {

@@ -243,7 +243,7 @@ Approach:
 Use a sieve-like method to count the prime factors for each number.
 
 Suggested Practice Problems
-1.	LeetCode:
+1.	LeetCode1:
 o	Count Primes
 o	Greatest Common Divisor of Strings
 o	Binary GCD

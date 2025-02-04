@@ -398,16 +398,16 @@ For FAANG problems, backtracking often follows a pattern:
 More Problems to Practice
 1.	Sudoku Solver:
 o	Place numbers on a Sudoku grid while respecting rules.
-o	Sudoku Solver - LeetCode
+o	Sudoku Solver - LeetCode1
 2.	Word Search:
 o	Find if a word exists in a 2D grid.
-o	Word Search - LeetCode
+o	Word Search - LeetCode1
 3.	Combination Sum:
 o	Find combinations of numbers that add up to a target.
-o	Combination Sum - LeetCode
+o	Combination Sum - LeetCode1
 4.	Palindrome Partitioning:
 o	Partition a string into palindromes.
-o	Palindrome Partitioning - LeetCode
+o	Palindrome Partitioning - LeetCode1
 
 
 

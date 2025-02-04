@@ -1,4 +1,4 @@
-package LeetCode.Subsets;
+package LeetCode1.Subsets;
 import java.util.*;
 public class GeneratePermutations {
     public static void main(String[] args) {
@@ -25,9 +25,9 @@ public class GeneratePermutations {
        }
 
         for(int i= index;i<nums.length;i++){
-            swap(nums,i,index);
-            generatePermutations(nums,index+1,result);
-            swap(nums,i,index);
+            swap(nums,i,index); //Moves an element to a new position
+            generatePermutations(nums,index+1,result); //Generates all permutations of remaining elements
+            swap(nums,i,index); //Restores original order (Backtracking)
         }
 
 

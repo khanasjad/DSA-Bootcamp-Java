@@ -288,7 +288,7 @@ Prefix Search	Find all words starting with a prefix	Prefix "ca" → "cat", "car"
 Applications	Word Search, Autocomplete, Dictionary	Word Search II, Autocomplete System
 
 Suggested Practice Problems:
-1.	LeetCode:
+1.	LeetCode1:
 o	Implement Trie (Prefix Tree)
 o	Word Search II
 o	Replace Words

@@ -1,6 +1,5 @@
-package LeetCode.SlidingWindows;
+package LeetCode1.SlidingWindows;
 
-import java.security.spec.RSAOtherPrimeInfo;
 import java.util.HashSet;
 
 public class LongestSubstringWithoutRepeatingCharacters {

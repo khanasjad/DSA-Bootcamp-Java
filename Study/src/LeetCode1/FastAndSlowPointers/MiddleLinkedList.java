@@ -1,4 +1,4 @@
-package LeetCode.FastAndSlowPointers;
+package LeetCode1.FastAndSlowPointers;
 
 public class MiddleLinkedList {
     public static void main(String[] args) {

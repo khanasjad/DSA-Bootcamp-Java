@@ -279,7 +279,7 @@ Top K Frequent Elements	Min-Heap	Find the most frequent K elements in an array
 Sort Elements	PriorityQueue	Use a heap to sort elements
 
 Suggested Practice Problems
-1.	LeetCode:
+1.	LeetCode1:
 o	Kth Largest Element in an Array
 o	Merge K Sorted Lists
 o	Top K Frequent Elements

@@ -1,4 +1,4 @@
-package LeetCode.CyclicSort;
+package LeetCode1.CyclicSort;
 
 public class MissingNumbers {
     public static void main(String[] args) {
